@@ -1,0 +1,3 @@
+-- Người phụ trách: Huy
+-- Giữ học viên đủ điều kiện chưa có điểm. Tính trung bình trên điểm đã nhập.
+-- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.
