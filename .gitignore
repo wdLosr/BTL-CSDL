@@ -1,0 +1,7 @@
+# Cấu hình riêng và tệp tạm
+.env
+.env.*
+!.env.example
+~$*
+Thumbs.db
+.DS_Store
