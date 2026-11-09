@@ -1,0 +1,23 @@
+# Bí mật và cấu hình cục bộ
+.env
+.env.*
+!.env.example
+secrets.local.*
+credentials.local.*
+*.key
+*.pem
+
+# Tệp tạm của hệ điều hành và trình soạn thảo
+.DS_Store
+Thumbs.db
+Desktop.ini
+~$*
+*.swp
+*.swo
+*~
+
+# Thư mục đầu ra tạm ở gốc dự án
+/build/
+/dist/
+/tmp/
+/.cache/
