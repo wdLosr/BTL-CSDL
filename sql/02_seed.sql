@@ -1,3 +1,0 @@
--- Người phụ trách: Quang
--- Nạp dữ liệu giả cho đăng ký, lần thu, đợt đánh giá, điểm 0 và trường hợp chưa nhập.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.

@@ -1,3 +1,0 @@
--- Người phụ trách: Quang
--- Tạo bảng theo thứ tự phụ thuộc. Bổ sung PK, FK, khóa duy nhất và ràng buộc.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.

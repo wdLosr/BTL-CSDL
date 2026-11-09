@@ -1,3 +1,0 @@
--- Người phụ trách: Lộc
--- Lọc mã hoặc tên và lớp. Tổng hợp lần thu theo đăng ký trước khi nối.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.
