@@ -1,0 +1,3 @@
+-- Người phụ trách: Khanh
+-- Đọc lại số dư trong giao dịch và ghi lần thu hợp lệ.
+-- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.
