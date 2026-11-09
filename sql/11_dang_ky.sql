@@ -1,3 +1,0 @@
--- Người phụ trách: Khanh
--- Xác nhận đăng ký bằng giao dịch. Kiểm tra trạng thái lớp, trùng và sĩ số.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.

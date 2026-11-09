@@ -1,3 +1,0 @@
--- Người phụ trách: Quang
--- Kiểm tra khóa, cùng lớp, trùng lịch và thang điểm. Ghi số liệu kỳ vọng.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.

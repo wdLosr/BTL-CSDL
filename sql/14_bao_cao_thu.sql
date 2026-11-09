@@ -1,3 +1,0 @@
--- Người phụ trách: Huy
--- Lọc theo kỳ và lớp. Trả chi tiết từng lần thu và tổng tiền.
--- Bổ sung câu lệnh sau khi nhận schema và quy ước SQL chính thức.
