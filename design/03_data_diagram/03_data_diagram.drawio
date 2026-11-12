@@ -1,2 +1,165 @@
-<?xml version='1.0' encoding='utf-8'?>
-<mxfile host="app.diagrams.net"><diagram id="starter" name="Data Diagram"><mxGraphModel grid="1" gridSize="10" page="1" pageScale="1" pageWidth="827" pageHeight="1169"><root><mxCell id="0" /><mxCell id="1" parent="0" /></root></mxGraphModel></diagram></mxfile>
+﻿<mxfile host="app.diagrams.net">
+  <diagram id="data_diagram_quang_v3" name="Data Diagram - Nhom 2">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1360" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title Banner -->
+        <mxCell id="title" value="&lt;h2 style='margin:0;font-size:18px;'&gt;DATA DIAGRAM (MÔ HÌNH DỮ LIỆU QUAN HỆ VẬT LÝ) - TRUNG TÂM TIẾNG ANH&lt;/h2&gt;&lt;p style='margin:4px 0 0 0;font-size:12px;'&gt;Nhóm 2 · Phụ trách: Quang · Chuẩn hóa 3NF / BCNF · 13 Bảng quan hệ với các liên kết trực giao vuông góc chuẩn mực&lt;/p&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F497D;strokeColor=#1F497D;fontColor=#FFFFFF;align=center;" vertex="1" parent="1">
+          <mxGeometry x="60" y="20" width="1780" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ROW 1: HỌC VIÊN, ĐĂNG KÝ, THU HỌC PHÍ ==================== -->
+
+        <!-- TABLE 1: HOC_VIEN (Col 2, Row 1) -->
+        <mxCell id="tbl_HOC_VIEN" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#1F497D;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;HOC_VIEN&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaHV&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;HoTen&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgaySinh&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;GioiTinh&lt;/td&gt;&lt;td&gt;VARCHAR(10)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#FFF2CC;'&gt;&lt;i style='color:#B25900;'&gt;UQ&lt;/i&gt;&lt;/td&gt;&lt;td&gt;SDT&lt;/td&gt;&lt;td&gt;VARCHAR(15)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#FFF2CC;'&gt;&lt;i style='color:#B25900;'&gt;UQ&lt;/i&gt;&lt;/td&gt;&lt;td&gt;Email&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;DiaChi&lt;/td&gt;&lt;td&gt;VARCHAR(255)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayTao&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#1F497D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="420" y="110" width="280" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 2: DANG_KY (Col 3, Row 1) -->
+        <mxCell id="tbl_DANG_KY" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#1F497D;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;DANG_KY&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaDK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK,UQ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaHV&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK,UQ&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaLop&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayDK&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;KhoanPhaiThu&lt;/b&gt;&lt;/td&gt;&lt;td&gt;DECIMAL(12,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;HanNop&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThaiDK&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#1F497D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="110" width="300" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 3: PHIEU_THANH_TOAN (Col 4, Row 1) -->
+        <mxCell id="tbl_PHIEU_THANH_TOAN" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#1F497D;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;PHIEU_THANH_TOAN&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaPhieu&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaDK&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayThanhToan&lt;/td&gt;&lt;td&gt;TIMESTAMP&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;SoTien&lt;/b&gt;&lt;/td&gt;&lt;td&gt;DECIMAL(12,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;PhuongThuc&lt;/td&gt;&lt;td&gt;VARCHAR(30)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThai&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;GhiChu&lt;/td&gt;&lt;td&gt;VARCHAR(255)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#1F497D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="110" width="280" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ROW 2: TỔ CHỨC LỚP HỌC & GIẢNG DẠY ==================== -->
+
+        <!-- TABLE 4: CO_SO (Col 1, Row 2) -->
+        <mxCell id="tbl_CO_SO" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#2E74B5;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;CO_SO&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaCS&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TenCS&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;DiaChi&lt;/td&gt;&lt;td&gt;VARCHAR(255)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;SDT&lt;/td&gt;&lt;td&gt;VARCHAR(15)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThai&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#2E74B5;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="410" width="260" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 5: KHOA_HOC (Col 1, Row 2.8) -->
+        <mxCell id="tbl_KHOA_HOC" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#2E74B5;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;KHOA_HOC&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaKH&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TenKH&lt;/td&gt;&lt;td&gt;VARCHAR(150)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;GiaKH&lt;/td&gt;&lt;td&gt;DECIMAL(12,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;ThoiLuong&lt;/td&gt;&lt;td&gt;INT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;MoTa&lt;/td&gt;&lt;td&gt;TEXT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThai&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#2E74B5;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="600" width="260" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 6: LOP_HOC (Col 3, Row 2 - TRUNG TÂM HỆ THỐNG) -->
+        <mxCell id="tbl_LOP_HOC" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#1F497D;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;LOP_HOC&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaLop&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TenLop&lt;/td&gt;&lt;td&gt;VARCHAR(150)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaKH&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaCS&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;LichHoc&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;SiSoToiDa&lt;/td&gt;&lt;td&gt;INT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;HocPhi&lt;/td&gt;&lt;td&gt;DECIMAL(12,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThai&lt;/td&gt;&lt;td&gt;VARCHAR(25)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayKhaiGiang&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayKetThuc&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#1F497D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="410" width="300" height="270" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 7: GIANG_DAY (Col 4, Row 2) -->
+        <mxCell id="tbl_GIANG_DAY" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#1F497D;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;GIANG_DAY&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaNS&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaLop&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;VaiTro&lt;/td&gt;&lt;td&gt;VARCHAR(30)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayPhanCong&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#1F497D;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="410" width="280" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 8: GIAO_VIEN (Col 4, Row 2.8) -->
+        <mxCell id="tbl_GIAO_VIEN" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#385723;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;GIAO_VIEN (ISA)&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaNS&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;HocVi&lt;/td&gt;&lt;td&gt;VARCHAR(50)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;ChuyenMon&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#385723;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="620" width="280" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 9: NHAN_VIEN (Col 4, Row 3.5) -->
+        <mxCell id="tbl_NHAN_VIEN" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#385723;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;NHAN_VIEN (ISA)&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaNS&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;ViTri&lt;/td&gt;&lt;td&gt;VARCHAR(50)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#385723;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="790" width="280" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 10: NHAN_SU (Col 5, Row 2.5) -->
+        <mxCell id="tbl_NHAN_SU" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#385723;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;NHAN_SU (Supertype)&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaNS&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;HoTen&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgaySinh&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;GioiTinh&lt;/td&gt;&lt;td&gt;VARCHAR(10)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#FFF2CC;'&gt;&lt;i style='color:#B25900;'&gt;UQ&lt;/i&gt;&lt;/td&gt;&lt;td&gt;SDT&lt;/td&gt;&lt;td&gt;VARCHAR(15)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#FFF2CC;'&gt;&lt;i style='color:#B25900;'&gt;UQ&lt;/i&gt;&lt;/td&gt;&lt;td&gt;Email&lt;/td&gt;&lt;td&gt;VARCHAR(100)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;DiaChi&lt;/td&gt;&lt;td&gt;VARCHAR(255)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TrangThai&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#385723;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="1580" y="560" width="260" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ROW 3: KHẢO THÍ & BÀI KIỂM TRA ==================== -->
+
+        <!-- TABLE 11: DE_THI (Col 1, Row 3) -->
+        <mxCell id="tbl_DE_THI" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#7030A0;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;DE_THI&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaDe&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TenDe&lt;/td&gt;&lt;td&gt;VARCHAR(150)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;ThoiLuong&lt;/td&gt;&lt;td&gt;INT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;LoaiDe&lt;/td&gt;&lt;td&gt;VARCHAR(50)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;MoTa&lt;/td&gt;&lt;td&gt;TEXT&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#7030A0;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="60" y="830" width="260" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- TABLE 12: BAI_KIEM_TRA (Col 3, Row 3) -->
+        <mxCell id="tbl_BAI_KIEM_TRA" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#7030A0;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;BAI_KIEM_TRA&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaBKT&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;TenBKT&lt;/td&gt;&lt;td&gt;VARCHAR(150)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaLop&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#7030A0;'&gt;FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;MaDe&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;LoaiBKT&lt;/td&gt;&lt;td&gt;VARCHAR(50)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;ThangDiem&lt;/td&gt;&lt;td&gt;DECIMAL(4,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayKiemTra&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#7030A0;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="770" width="300" height="210" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== ROW 4: KẾT QUẢ THI ==================== -->
+
+        <!-- TABLE 13: LAM_BAI (Col 3, Row 4) -->
+        <mxCell id="tbl_LAM_BAI" value="&lt;table border='1' width='100%' cellpadding='4' style='border-collapse:collapse;font-size:11px;font-family:Segoe UI,Arial;'&gt;&lt;tr style='background:#7030A0;color:#ffffff;'&gt;&lt;th colspan='3'&gt;&lt;b&gt;LAM_BAI&lt;/b&gt;&lt;/th&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaHV&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E1D5E7;'&gt;&lt;b style='color:#C00000;'&gt;PK,FK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;MaBKT&lt;/b&gt;&lt;/td&gt;&lt;td&gt;VARCHAR(20)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style='background:#E9EEF4;'&gt;&lt;b style='color:#C00000;'&gt;PK&lt;/b&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;LanThi&lt;/b&gt;&lt;/td&gt;&lt;td&gt;INT&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;NgayThi&lt;/td&gt;&lt;td&gt;DATE&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;&lt;b&gt;Diem&lt;/b&gt;&lt;/td&gt;&lt;td&gt;DECIMAL(4,2)&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td&gt;&lt;/td&gt;&lt;td&gt;GhiChu&lt;/td&gt;&lt;td&gt;VARCHAR(255)&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" style="shape=rectangle;whiteSpace=wrap;html=1;overflow=fill;fillColor=#FFFFFF;strokeColor=#7030A0;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="800" y="1060" width="300" height="190" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== CROW'S FOOT CONNECTOR LINES ==================== -->
+
+        <!-- 1. HOC_VIEN (1) to DANG_KY (N) [Direct horizontal: y = 215] -->
+        <mxCell id="edge_HV_DK" edge="1" parent="1" source="tbl_HOC_VIEN" target="tbl_DANG_KY" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#1F497D;exitX=1;exitY=0.48;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 2. DANG_KY (1) to PHIEU_THANH_TOAN (N) [Direct horizontal: y = 215] -->
+        <mxCell id="edge_DK_PTT" edge="1" parent="1" source="tbl_DANG_KY" target="tbl_PHIEU_THANH_TOAN" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#1F497D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 3. LOP_HOC (1) to DANG_KY (N) [Direct vertical: x = 950] -->
+        <mxCell id="edge_LOP_DK" edge="1" parent="1" source="tbl_LOP_HOC" target="tbl_DANG_KY" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#1F497D;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 4. CO_SO (1) to LOP_HOC (N) [Direct horizontal: y = 480] -->
+        <mxCell id="edge_CS_LOP" edge="1" parent="1" source="tbl_CO_SO" target="tbl_LOP_HOC" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#2E74B5;exitX=1;exitY=0.47;exitDx=0;exitDy=0;entryX=0;entryY=0.26;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 5. KHOA_HOC (1) to LOP_HOC (N) [Direct horizontal: y = 650] -->
+        <mxCell id="edge_KH_LOP" edge="1" parent="1" source="tbl_KHOA_HOC" target="tbl_LOP_HOC" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#2E74B5;exitX=1;exitY=0.29;exitDx=0;exitDy=0;entryX=0;entryY=0.89;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 6. LOP_HOC (1) to GIANG_DAY (N) [Direct horizontal: y = 480] -->
+        <mxCell id="edge_LOP_GD" edge="1" parent="1" source="tbl_LOP_HOC" target="tbl_GIANG_DAY" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#1F497D;exitX=1;exitY=0.26;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 7. GIAO_VIEN (1) to GIANG_DAY (N) [Direct vertical: x = 1340] -->
+        <mxCell id="edge_GV_GD" edge="1" parent="1" source="tbl_GIAO_VIEN" target="tbl_GIANG_DAY" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#385723;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 8. NHAN_SU to GIAO_VIEN (ISA 1-1) [Direct horizontal: y = 680] -->
+        <mxCell id="edge_NS_GV" edge="1" parent="1" source="tbl_NHAN_SU" target="tbl_GIAO_VIEN" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERone;endFill=0;strokeWidth=2;strokeColor=#385723;dashed=1;exitX=0;exitY=0.52;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 9. NHAN_SU to NHAN_VIEN (ISA 1-1) [Crisp 90-degree orthogonal step in gutter] -->
+        <mxCell id="edge_NS_NV" edge="1" parent="1" source="tbl_NHAN_SU" target="tbl_NHAN_VIEN" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERone;endFill=0;strokeWidth=2;strokeColor=#385723;dashed=1;exitX=0;exitY=0.87;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1530" y="760" />
+              <mxPoint x="1530" y="840" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 10. LOP_HOC (1) to BAI_KIEM_TRA (N) [Direct vertical: x = 950] -->
+        <mxCell id="edge_LOP_BKT" edge="1" parent="1" source="tbl_LOP_HOC" target="tbl_BAI_KIEM_TRA" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#7030A0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 11. DE_THI (1) to BAI_KIEM_TRA (N) [Direct horizontal: y = 910] -->
+        <mxCell id="edge_DE_BKT" edge="1" parent="1" source="tbl_DE_THI" target="tbl_BAI_KIEM_TRA" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#7030A0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.67;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 12. BAI_KIEM_TRA (1) to LAM_BAI (N) [Direct vertical: x = 950] -->
+        <mxCell id="edge_BKT_LB" edge="1" parent="1" source="tbl_BAI_KIEM_TRA" target="tbl_LAM_BAI" style="edgeStyle=none;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2;strokeColor=#7030A0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- 13. HOC_VIEN (1) to LAM_BAI (N) [Exact 90-degree orthogonal turn in clear Col 2 center] -->
+        <mxCell id="edge_HV_LB" edge="1" parent="1" source="tbl_HOC_VIEN" target="tbl_LAM_BAI" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;startArrow=ERmandOne;startFill=0;endArrow=ERmany;endFill=0;strokeWidth=2.5;strokeColor=#7030A0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="560" y="1155" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
