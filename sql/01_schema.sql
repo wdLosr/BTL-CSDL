@@ -1,35 +1,47 @@
 -- ============================================================================
--- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH
+-- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH (MYSQL / MARIADB VERSION)
 -- Bài tập lớn môn Cơ sở dữ liệu · Nhóm 2 · PTIT
 -- Phụ trách thiết kế và cài đặt CSDL (Tiêu chí 3, 4, 8): Quang
 -- Tệp tin: 01_schema.sql
--- Mục đích: DDL khởi tạo toàn bộ cấu trúc bảng, khóa, ràng buộc và View
+-- Mục đích: DDL khởi tạo toàn bộ cấu trúc CSDL trên MySQL / MariaDB (InnoDB, UTF-8)
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
--- 1. XÓA CÁC ĐỐI TƯỢNG CŨ NẾU ĐÃ TỒN TẠI (THEO THỨ TỰ PHỤ THUỘC NGƯỢC)
+-- 0. THIẾT LẬP MÔI TRƯỜNG VÀ CƠ SỞ DỮ LIỆU MYSQL
 -- ----------------------------------------------------------------------------
-DROP VIEW IF EXISTS v_bao_cao_ket_qua_lop CASCADE;
-DROP VIEW IF EXISTS v_bao_cao_thu_hoc_phi CASCADE;
-DROP VIEW IF EXISTS v_dang_ky_hoc_phi CASCADE;
-DROP VIEW IF EXISTS v_si_so_lop CASCADE;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-DROP TABLE IF EXISTS LAM_BAI CASCADE;
-DROP TABLE IF EXISTS BAI_KIEM_TRA CASCADE;
-DROP TABLE IF EXISTS DE_THI CASCADE;
-DROP TABLE IF EXISTS PHIEU_THANH_TOAN CASCADE;
-DROP TABLE IF EXISTS DANG_KY CASCADE;
-DROP TABLE IF EXISTS GIANG_DAY CASCADE;
-DROP TABLE IF EXISTS LOP_HOC CASCADE;
-DROP TABLE IF EXISTS HOC_VIEN CASCADE;
-DROP TABLE IF EXISTS NHAN_VIEN CASCADE;
-DROP TABLE IF EXISTS GIAO_VIEN CASCADE;
-DROP TABLE IF EXISTS NHAN_SU CASCADE;
-DROP TABLE IF EXISTS KHOA_HOC CASCADE;
-DROP TABLE IF EXISTS CO_SO CASCADE;
+-- Tạo cơ sở dữ liệu nếu chưa tồn tại và kích hoạt sử dụng
+CREATE DATABASE IF NOT EXISTS english_center_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE english_center_db;
 
 -- ----------------------------------------------------------------------------
--- 2. TẠO CÁC BẢNG QUAN HỆ (THEO THỨ TỰ PHỤ THUỘC TỪ CHA ĐẾN CON)
+-- 1. XÓA CÁC ĐỐI TƯỢNG CŨ NẾU ĐÃ TỒN TẠI (THEO CÚ PHÁP MYSQL)
+-- ----------------------------------------------------------------------------
+DROP VIEW IF EXISTS v_bao_cao_ket_qua_lop;
+DROP VIEW IF EXISTS v_bao_cao_thu_hoc_phi;
+DROP VIEW IF EXISTS v_dang_ky_hoc_phi;
+DROP VIEW IF EXISTS v_si_so_lop;
+
+DROP TABLE IF EXISTS LAM_BAI;
+DROP TABLE IF EXISTS BAI_KIEM_TRA;
+DROP TABLE IF EXISTS DE_THI;
+DROP TABLE IF EXISTS PHIEU_THANH_TOAN;
+DROP TABLE IF EXISTS DANG_KY;
+DROP TABLE IF EXISTS GIANG_DAY;
+DROP TABLE IF EXISTS LOP_HOC;
+DROP TABLE IF EXISTS HOC_VIEN;
+DROP TABLE IF EXISTS NHAN_VIEN;
+DROP TABLE IF EXISTS GIAO_VIEN;
+DROP TABLE IF EXISTS NHAN_SU;
+DROP TABLE IF EXISTS KHOA_HOC;
+DROP TABLE IF EXISTS CO_SO;
+
+-- ----------------------------------------------------------------------------
+-- 2. TẠO CÁC BẢNG QUAN HỆ (ENGINE=InnoDB, ĐẦY ĐỦ KHÓA CHÍNH, NGOẠI, CHECK)
 -- ----------------------------------------------------------------------------
 
 -- BẢNG 1: CƠ SỞ ĐÀO TẠO
@@ -41,7 +53,7 @@ CREATE TABLE CO_SO (
     TrangThai   VARCHAR(20)     NOT NULL DEFAULT 'HoatDong',
     CONSTRAINT PK_CO_SO PRIMARY KEY (MaCS),
     CONSTRAINT CK_CO_SO_TrangThai CHECK (TrangThai IN ('HoatDong', 'TamDung'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 2: KHÓA HỌC ĐÀO TẠO
 CREATE TABLE KHOA_HOC (
@@ -55,7 +67,7 @@ CREATE TABLE KHOA_HOC (
     CONSTRAINT CK_KHOA_HOC_GiaKH CHECK (GiaKH >= 0),
     CONSTRAINT CK_KHOA_HOC_ThoiLuong CHECK (ThoiLuong > 0),
     CONSTRAINT CK_KHOA_HOC_TrangThai CHECK (TrangThai IN ('DangMo', 'NgungMo'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 3: NHÂN SỰ (SUPERTYPE TRONG MÔ HÌNH ISA)
 CREATE TABLE NHAN_SU (
@@ -72,7 +84,7 @@ CREATE TABLE NHAN_SU (
     CONSTRAINT UQ_NHAN_SU_Email UNIQUE (Email),
     CONSTRAINT CK_NHAN_SU_GioiTinh CHECK (GioiTinh IN ('Nam', 'Nu', 'Khac')),
     CONSTRAINT CK_NHAN_SU_TrangThai CHECK (TrangThai IN ('DangLamViec', 'NghiViec'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 4: GIÁO VIÊN (SUBTYPE ISA CỦA NHAN_SU)
 CREATE TABLE GIAO_VIEN (
@@ -82,7 +94,7 @@ CREATE TABLE GIAO_VIEN (
     CONSTRAINT PK_GIAO_VIEN PRIMARY KEY (MaNS),
     CONSTRAINT FK_GIAO_VIEN_NHAN_SU FOREIGN KEY (MaNS) 
         REFERENCES NHAN_SU(MaNS) ON DELETE CASCADE ON UPDATE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 5: NHÂN VIÊN HÀNH CHÍNH / TƯ VẤN / THU NGÂN (SUBTYPE ISA CỦA NHAN_SU)
 CREATE TABLE NHAN_VIEN (
@@ -92,7 +104,7 @@ CREATE TABLE NHAN_VIEN (
     CONSTRAINT FK_NHAN_VIEN_NHAN_SU FOREIGN KEY (MaNS) 
         REFERENCES NHAN_SU(MaNS) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT CK_NHAN_VIEN_ViTri CHECK (ViTri IN ('TuVan', 'GiaoVu', 'ThuNgan', 'QuanLy'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 6: HỌC VIÊN
 CREATE TABLE HOC_VIEN (
@@ -103,12 +115,12 @@ CREATE TABLE HOC_VIEN (
     SDT         VARCHAR(15)     NOT NULL,
     Email       VARCHAR(100)    NOT NULL,
     DiaChi      VARCHAR(255)    NULL,
-    NgayTao     DATE            NOT NULL DEFAULT CURRENT_DATE,
+    NgayTao     DATE            NOT NULL DEFAULT (CURRENT_DATE),
     CONSTRAINT PK_HOC_VIEN PRIMARY KEY (MaHV),
     CONSTRAINT UQ_HOC_VIEN_SDT UNIQUE (SDT),
     CONSTRAINT UQ_HOC_VIEN_Email UNIQUE (Email),
     CONSTRAINT CK_HOC_VIEN_GioiTinh CHECK (GioiTinh IN ('Nam', 'Nu', 'Khac'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 7: LỚP HỌC CỤ THỂ
 CREATE TABLE LOP_HOC (
@@ -131,28 +143,28 @@ CREATE TABLE LOP_HOC (
     CONSTRAINT CK_LOP_HOC_HocPhi CHECK (HocPhi >= 0),
     CONSTRAINT CK_LOP_HOC_TrangThai CHECK (TrangThai IN ('ChuanBi', 'DangNhanDangKy', 'DangHoc', 'DaKetThuc')),
     CONSTRAINT CK_LOP_HOC_Ngay CHECK (NgayKetThuc IS NULL OR NgayKhaiGiang IS NULL OR NgayKetThuc >= NgayKhaiGiang)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 8: PHÂN CÔNG GIẢNG DẠY (LIÊN KẾT N-N GIỮA GIÁO VIÊN VÀ LỚP)
 CREATE TABLE GIANG_DAY (
     MaNS            VARCHAR(20)     NOT NULL,
     MaLop           VARCHAR(20)     NOT NULL,
     VaiTro          VARCHAR(30)     NOT NULL DEFAULT 'GiaoVienChinh',
-    NgayPhanCong    DATE            NOT NULL DEFAULT CURRENT_DATE,
+    NgayPhanCong    DATE            NOT NULL DEFAULT (CURRENT_DATE),
     CONSTRAINT PK_GIANG_DAY PRIMARY KEY (MaNS, MaLop),
     CONSTRAINT FK_GIANG_DAY_GIAO_VIEN FOREIGN KEY (MaNS) 
         REFERENCES GIAO_VIEN(MaNS) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT FK_GIANG_DAY_LOP_HOC FOREIGN KEY (MaLop) 
         REFERENCES LOP_HOC(MaLop) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT CK_GIANG_DAY_VaiTro CHECK (VaiTro IN ('GiaoVienChinh', 'TroGiang'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 9: ĐĂNG KÝ HỌC (CHỐT HỌC PHÍ TẠI THỜI ĐIỂM GHI DANH)
 CREATE TABLE DANG_KY (
     MaDK            VARCHAR(20)     NOT NULL,
     MaHV            VARCHAR(20)     NOT NULL,
     MaLop           VARCHAR(20)     NOT NULL,
-    NgayDK          DATE            NOT NULL DEFAULT CURRENT_DATE,
+    NgayDK          DATE            NOT NULL DEFAULT (CURRENT_DATE),
     KhoanPhaiThu    DECIMAL(12,2)   NOT NULL,
     HanNop          DATE            NOT NULL,
     TrangThaiDK     VARCHAR(20)     NOT NULL DEFAULT 'DaXacNhan',
@@ -165,13 +177,13 @@ CREATE TABLE DANG_KY (
     CONSTRAINT CK_DANG_KY_KhoanPhaiThu CHECK (KhoanPhaiThu >= 0),
     CONSTRAINT CK_DANG_KY_TrangThai CHECK (TrangThaiDK IN ('DaXacNhan', 'DaHuy', 'DaHoanThanh')),
     CONSTRAINT CK_DANG_KY_HanNop CHECK (HanNop >= NgayDK)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 10: PHIẾU THANH TOÁN (LẦN THU HỌC PHÍ)
 CREATE TABLE PHIEU_THANH_TOAN (
     MaPhieu         VARCHAR(20)     NOT NULL,
     MaDK            VARCHAR(20)     NOT NULL,
-    NgayThanhToan   TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    NgayThanhToan   DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
     SoTien          DECIMAL(12,2)   NOT NULL,
     PhuongThuc      VARCHAR(30)     NOT NULL DEFAULT 'TienMat',
     TrangThai       VARCHAR(20)     NOT NULL DEFAULT 'ThanhCong',
@@ -182,7 +194,7 @@ CREATE TABLE PHIEU_THANH_TOAN (
     CONSTRAINT CK_PHIEU_THANH_TOAN_SoTien CHECK (SoTien > 0),
     CONSTRAINT CK_PHIEU_THANH_TOAN_PhuongThuc CHECK (PhuongThuc IN ('TienMat', 'ChuyenKhoan', 'The', 'ViDienTu')),
     CONSTRAINT CK_PHIEU_THANH_TOAN_TrangThai CHECK (TrangThai IN ('ThanhCong', 'DaHuy'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 11: ĐỀ THI
 CREATE TABLE DE_THI (
@@ -193,7 +205,7 @@ CREATE TABLE DE_THI (
     MoTa            TEXT            NULL,
     CONSTRAINT PK_DE_THI PRIMARY KEY (MaDe),
     CONSTRAINT CK_DE_THI_ThoiLuong CHECK (ThoiLuong > 0)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 12: BÀI KIỂM TRA (ĐỢT ĐÁNH GIÁ THEO LỚP)
 CREATE TABLE BAI_KIEM_TRA (
@@ -211,14 +223,14 @@ CREATE TABLE BAI_KIEM_TRA (
         REFERENCES DE_THI(MaDe) ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT CK_BAI_KIEM_TRA_ThangDiem CHECK (ThangDiem > 0),
     CONSTRAINT CK_BAI_KIEM_TRA_LoaiBKT CHECK (LoaiBKT IN ('GiuaKy', 'CuoiKy', 'ChuyenCan', 'DinhKy'))
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- BẢNG 13: KẾT QUẢ LÀM BÀI KIỂM TRA (HỖ TRỢ THI LẠI QUA LanThi)
 CREATE TABLE LAM_BAI (
     MaHV            VARCHAR(20)     NOT NULL,
     MaBKT           VARCHAR(20)     NOT NULL,
     LanThi          INT             NOT NULL DEFAULT 1,
-    NgayThi         DATE            NOT NULL DEFAULT CURRENT_DATE,
+    NgayThi         DATE            NOT NULL DEFAULT (CURRENT_DATE),
     Diem            DECIMAL(4,2)    NULL,
     GhiChu          VARCHAR(255)    NULL,
     CONSTRAINT PK_LAM_BAI PRIMARY KEY (MaHV, MaBKT, LanThi),
@@ -228,7 +240,7 @@ CREATE TABLE LAM_BAI (
         REFERENCES BAI_KIEM_TRA(MaBKT) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT CK_LAM_BAI_LanThi CHECK (LanThi >= 1),
     CONSTRAINT CK_LAM_BAI_Diem CHECK (Diem IS NULL OR Diem >= 0)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------------
 -- 3. CÁC CHỈ MỤC TỐI ƯU TRUY VẤN (INDEXES)
@@ -248,7 +260,7 @@ CREATE INDEX IDX_LAM_BAI_BKT ON LAM_BAI(MaBKT);
 
 -- VIEW 1: THEO DÕI SĨ SỐ THỰC TẾ VÀ SỐ CHỖ CÒN LẠI CỦA TỪNG LỚP
 -- Phục vụ: Khanh (Form đăng ký lớp) & Lộc (Màn hình tìm kiếm)
-CREATE VIEW v_si_so_lop AS
+CREATE OR REPLACE VIEW v_si_so_lop AS
 SELECT 
     l.MaLop,
     l.TenLop,
@@ -268,7 +280,7 @@ GROUP BY l.MaLop, l.TenLop, l.SiSoToiDa, l.HocPhi, l.TrangThai;
 
 -- VIEW 2: TỔNG HỢP CÔNG NỢ, ĐÃ THU VÀ SỐ DƯ THEO ĐĂNG KÝ
 -- Phục vụ: Khanh (Form thu học phí) & Lộc (Màn hình tìm kiếm theo học viên/lớp)
-CREATE VIEW v_dang_ky_hoc_phi AS
+CREATE OR REPLACE VIEW v_dang_ky_hoc_phi AS
 SELECT 
     dk.MaDK,
     dk.MaHV,
@@ -300,7 +312,7 @@ GROUP BY dk.MaDK, dk.MaHV, hv.HoTen, hv.SDT, hv.Email, dk.MaLop, lh.TenLop, dk.N
 
 -- VIEW 3: BÁO CÁO THU HỌC PHÍ THEO KỲ
 -- Phục vụ: Huy (Báo cáo thu học phí có thể xuất Excel)
-CREATE VIEW v_bao_cao_thu_hoc_phi AS
+CREATE OR REPLACE VIEW v_bao_cao_thu_hoc_phi AS
 SELECT 
     ptt.MaPhieu,
     ptt.NgayThanhToan,
@@ -324,7 +336,7 @@ WHERE ptt.TrangThai = 'ThanhCong';
 
 -- VIEW 4: BÁO CÁO KẾT QUẢ ĐÁNH GIÁ THEO LỚP
 -- Phục vụ: Huy (Báo cáo kết quả lớp có thể xuất Excel)
-CREATE VIEW v_bao_cao_ket_qua_lop AS
+CREATE OR REPLACE VIEW v_bao_cao_ket_qua_lop AS
 SELECT 
     lh.MaLop,
     lh.TenLop,
@@ -348,3 +360,9 @@ JOIN LOP_HOC lh ON bkt.MaLop = lh.MaLop
 JOIN DANG_KY dk ON lh.MaLop = dk.MaLop AND dk.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')
 JOIN HOC_VIEN hv ON dk.MaHV = hv.MaHV
 LEFT JOIN LAM_BAI lb ON bkt.MaBKT = lb.MaBKT AND hv.MaHV = lb.MaHV;
+
+-- ----------------------------------------------------------------------------
+-- 5. KHÔI PHỤC CẤU HÌNH HỆ THỐNG MYSQL
+-- ----------------------------------------------------------------------------
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
