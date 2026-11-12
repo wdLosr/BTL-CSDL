@@ -20,7 +20,7 @@
 - `INT`: Số nguyên (4 bytes), dùng cho sĩ số, thời lượng, số lần thi.
 - `DECIMAL(p, s)`: Số thực có độ chính xác cố định (`p` chữ số, `s` số sau dấu phẩy), bắt buộc dùng cho tiền tệ (`DECIMAL(12,2)`) và điểm số (`DECIMAL(4,2)`), tuyệt đối không dùng FLOAT/DOUBLE để tránh sai số làm tròn tài chính.
 - `DATE`: Kiểu ngày (YYYY-MM-DD), dùng cho ngày sinh, ngày đăng ký, ngày khai giảng.
-- `TIMESTAMP`: Kiểu thời điểm (ngày và giờ chính xác), dùng cho thời điểm thanh toán phiếu thu.
+- `DATETIME`: Kiểu ngày và giờ địa phương, dùng cho thời điểm thanh toán phiếu thu.
 
 ---
 
@@ -188,7 +188,7 @@ Hệ thống gồm **13 bảng quan hệ** chuẩn hóa:
 
 *Quy tắc nghiệp vụ:*
 1. Cặp `(MaHV, MaLop)` là DUY NHẤT (`UNIQUE`).
-2. Chỉ đăng ký có `TrangThaiDK = 'DaXacNhan'` mới được tính vào sĩ số hiện tại của lớp để kiểm tra `SiSoToiDa`.
+2. Đăng ký có `TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')` được tính vào sĩ số hiện tại của lớp để kiểm tra `SiSoToiDa`; `DaHuy` không chiếm chỗ.
 3. Khi học viên hủy đăng ký, bản ghi được cập nhật `TrangThaiDK = 'DaHuy'`. Nếu học viên đăng ký lại, cập nhật lại chính bản ghi này, kiểm tra chỗ trống, gán lại `NgayDK = CURRENT_DATE`, chốt lại `KhoanPhaiThu` theo mức học phí mới của lớp.
 
 ---
@@ -202,7 +202,7 @@ Hệ thống gồm **13 bảng quan hệ** chuẩn hóa:
 | :--- | :--- | :--- | :---: | :---: | :--- | :--- |
 | `MaPhieu` | Mã phiếu thanh toán | VARCHAR(20) | NO | PK | | Mã biên nhận thu tiền duy nhất (vd: 'PTT001'). |
 | `MaDK` | Mã đăng ký | VARCHAR(20) | NO | FK | | Đăng ký được thanh toán. Tham chiếu `DANG_KY(MaDK)`. |
-| `NgayThanhToan` | Thời điểm thanh toán | TIMESTAMP | NO | | CURRENT_TIMESTAMP | Ngày và giờ lập phiếu thu. |
+| `NgayThanhToan` | Thời điểm thanh toán | DATETIME | NO | | CURRENT_TIMESTAMP | Ngày và giờ lập phiếu thu theo giờ địa phương của trung tâm. |
 | `SoTien` | Số tiền thu | DECIMAL(12,2) | NO | CHECK | | Số tiền đóng của lần này. Bắt buộc: `SoTien > 0`. |
 | `PhuongThuc` | Hình thức thu tiền | VARCHAR(30) | NO | CHECK | 'TienMat' | `'TienMat'`, `'ChuyenKhoan'`, `'The'`, `'ViDienTu'`. |
 | `TrangThai` | Trạng thái phiếu | VARCHAR(20) | NO | CHECK | 'ThanhCong' | Miền giá trị: `'ThanhCong'`, `'DaHuy'`. |
@@ -300,7 +300,7 @@ Các chỉ tiêu dưới đây **không được lưu trữ trực tiếp dướ
    *(Đối với đăng ký có `TrangThaiDK = 'DaHuy'`, số dư được quy ước là "Không áp dụng" - N/A).*
 
 3. **Sĩ số thực tế hiện tại của lớp học (`SiSoHienTai`):**
-   $$\text{SiSoHienTai} = \text{COUNT}(\text{DANG\_KY.MaDK}) \quad \text{với } \text{TrangThaiDK} = \text{'DaXacNhan'}$$
+   $$\text{SiSoHienTai} = \text{COUNT}(\text{DANG\_KY.MaDK}) \quad \text{với } \text{TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')}$$
 
 4. **Số chỗ còn trống của lớp (`SoChoConLai`):**
    $$\text{SoChoConLai} = \text{LOP\_HOC.SiSoToiDa} - \text{SiSoHienTai}$$

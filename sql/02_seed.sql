@@ -10,7 +10,11 @@
 USE english_center_db;
 
 /*!40101 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+-- Thứ tự DELETE/INSERT đã theo phụ thuộc khóa ngoại; luôn kiểm tra khóa ngoại.
+SET SESSION FOREIGN_KEY_CHECKS = 1;
+-- Workbench có thể bật Safe Updates; chỉ tắt trong lúc xóa dữ liệu mẫu.
+SET @OLD_SQL_SAFE_UPDATES = @@SESSION.SQL_SAFE_UPDATES;
+SET SESSION SQL_SAFE_UPDATES = 0;
 
 -- ----------------------------------------------------------------------------
 -- 0. XÓA SẠCH DỮ LIỆU CŨ ĐỂ ĐẶT LẠI TRẠNG THÁI DEMO BAN ĐẦU
@@ -28,6 +32,7 @@ DELETE FROM GIAO_VIEN;
 DELETE FROM NHAN_SU;
 DELETE FROM KHOA_HOC;
 DELETE FROM CO_SO;
+SET SESSION SQL_SAFE_UPDATES = @OLD_SQL_SAFE_UPDATES;
 
 -- ----------------------------------------------------------------------------
 -- 1. CƠ SỞ ĐÀO TẠO
@@ -121,7 +126,7 @@ INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiD
 ('DK004', 'HV004', 'LOP_IE_01', '2026-09-29', 3000000.00, '2026-10-10', 'DaHuy'),
 
 -- DK005 & DK006: Chiếm trọn 2 chỗ của LOP_TOEIC_A -> Làm cho lớp đầy chỗ
-('DK005', 'HV005', 'LOP_TOEIC_A', '2026-10-10', 2500000.00, '2026-10-20', 'DaXacNhan'),
+('DK005', 'HV005', 'LOP_TOEIC_A', '2026-10-10', 2500000.00, '2026-10-20', 'DaHoanThanh'),
 ('DK006', 'HV006', 'LOP_TOEIC_A', '2026-10-11', 2500000.00, '2026-10-20', 'DaXacNhan'),
 
 -- DK007 & DK008: Chiếm 2/3 chỗ của LOP_GT_01 -> Còn lại đúng 1 chỗ trống!
@@ -171,6 +176,3 @@ INSERT INTO LAM_BAI (MaHV, MaBKT, LanThi, NgayThi, Diem, GhiChu) VALUES
 
 -- HV002 làm BKT01: đạt 0.0 điểm (Ca điểm 0 đã nhập thực tế, không được nhầm với chưa nhập)
 ('HV002', 'BKT01', 1, '2026-11-05', 0.00, 'Bỏ bài trắng hoặc vi phạm quy chế');
-
--- Khôi phục kiểm tra khóa ngoại
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

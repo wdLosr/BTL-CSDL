@@ -25,9 +25,9 @@
       if (kind === 'positiveDecimal' && number === 0) return `${label} phải lớn hơn 0.`;
     }
     const get = name => form.elements.namedItem(name)?.value.trim() || '';
-    if (field.name === 'hanNop' && get('ngayDK') && value < get('ngayDK')) return 'Hạn nộp không được trước ngày đăng ký.';
+    if (field.name === 'hanNop' && value < localToday) return 'Hạn nộp không được trước hôm nay.';
+    if (field.name === 'ngayKetThuc' && get('ngayKhaiGiang') && value < get('ngayKhaiGiang')) return 'Ngày kết thúc không được trước ngày khai giảng.';
     if (field.name === 'denNgay' && get('tuNgay') && value < get('tuNgay')) return 'Đến ngày không được trước từ ngày.';
-    if (field.name === 'diem' && get('thangDiemApDung') && Number(value) > Number(get('thangDiemApDung'))) return 'Điểm không được vượt thang điểm áp dụng.';
     return '';
   }
 
@@ -43,7 +43,7 @@
     field.addEventListener('change', () => show(field, false));
     field.addEventListener('blur', () => show(field, true));
   });
-  [['ngayDK', 'hanNop'], ['tuNgay', 'denNgay'], ['thangDiemApDung', 'diem']].forEach(([a, b]) => {
+  [['ngayKhaiGiang', 'ngayKetThuc'], ['tuNgay', 'denNgay']].forEach(([a, b]) => {
     const source = form.elements.namedItem(a), target = form.elements.namedItem(b);
     if (source && target) source.addEventListener('input', () => { if (target.value) show(target, false); });
   });
