@@ -1,0 +1,168 @@
+# HƯỚNG DẪN THỰC THI VÀ TÀI LIỆU KỸ THUẬT CSDL (MYSQL / MARIADB)
+**Hệ thống Quản lý Trung tâm Tiếng Anh · BTL Cơ sở dữ liệu · Nhóm 2**  
+*Người phụ trách thiết kế và cài đặt CSDL (Tiêu chí 3, 4, 8):* **Quang**
+
+---
+
+## 1. Cấu trúc thư mục SQL
+Toàn bộ mã nguồn DDL, dữ liệu mẫu chuẩn hóa và các kịch bản kiểm thử đã được chuẩn hóa 100% theo cú pháp **MySQL / MariaDB (InnoDB, UTF-8)**:
+
+```text
+sql/
+├── 01_schema.sql           # DDL khởi tạo 13 bảng (InnoDB), PK, FK, UNIQUE, CHECK, Index, 4 View dùng chung
+├── 02_seed.sql             # Dữ liệu mẫu chuẩn hóa bao phủ toàn bộ các ca kiểm thử T01–T10
+├── 03_checks.sql           # Kịch bản kiểm thử toàn vẹn, xác minh 4 View, negative tests & transaction locking
+├── 11_dang_ky.sql          # Module nghiệp vụ: Xác nhận đăng ký lớp (Khanh phụ trách)
+├── 12_thu_hoc_phi.sql      # Module nghiệp vụ: Thu học phí (Khanh phụ trách)
+├── 13_tim_kiem.sql         # Module nghiệp vụ: Tìm kiếm và tra cứu (Lộc phụ trách)
+├── 14_bao_cao_thu.sql      # Module nghiệp vụ: Báo cáo thu học phí theo kỳ (Huy phụ trách)
+├── 15_bao_cao_ket_qua.sql  # Module nghiệp vụ: Báo cáo kết quả học tập theo lớp (Huy phụ trách)
+└── README.md               # Tài liệu kỹ thuật và hướng dẫn thực thi (Quang biên soạn)
+```
+
+---
+
+## 2. Thông số kỹ thuật MySQL / MariaDB đã thiết lập
+
+1. **Hệ quản trị CSDL:** MariaDB $\ge$ 10.4 hoặc MySQL $\ge$ 8.0 (Tương thích hoàn hảo với gói cài đặt **XAMPP**).
+2. **Database:** `english_center_db` (Tự động tạo mới và chuyển đổi bằng `CREATE DATABASE IF NOT EXISTS ...; USE english_center_db;`).
+3. **Storage Engine:** `ENGINE=InnoDB` cho toàn bộ 13 bảng để đảm bảo tính toàn vẹn tham chiếu (Foreign Keys) và hỗ trợ giao dịch ACID.
+4. **Bảng mã và đối chiếu:** `CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci` hỗ trợ lưu trữ tiếng Việt có dấu đầy đủ và không bị lỗi font.
+5. **Cơ chế chống nghẽn khóa ngoại:** Thiết lập `FOREIGN_KEY_CHECKS = 0;` khi drop bảng/reset dữ liệu và khôi phục `FOREIGN_KEY_CHECKS = 1;` khi hoàn thành.
+6. **Kiểm tra ràng buộc miền giá trị:** Thực thi `CHECK constraints` trực tiếp trên tầng lưu trữ MySQL.
+
+---
+
+## 3. Thứ tự thực thi chuẩn (Execution Order)
+
+Để dựng mới hoặc khởi tạo lại môi trường kiểm thử cho nhóm, chạy lần lượt các tệp tin theo đúng thứ tự:
+
+### **Bước 1: Khởi tạo cấu trúc CSDL (`01_schema.sql`)**
+- Tự động xóa sạch bảng và View cũ nếu đã tồn tại.
+- Tạo 13 bảng theo thứ tự cha trước – con sau:
+  1. `CO_SO` $\to$ 2. `KHOA_HOC` $\to$ 3. `NHAN_SU` $\to$ 4. `GIAO_VIEN` $\to$ 5. `NHAN_VIEN` $\to$ 6. `HOC_VIEN` $\to$ 7. `LOP_HOC` $\to$ 8. `GIANG_DAY` $\to$ 9. `DANG_KY` $\to$ 10. `PHIEU_THANH_TOAN` $\to$ 11. `DE_THI` $\to$ 12. `BAI_KIEM_TRA` $\to$ 13. `LAM_BAI`.
+- Khởi tạo 8 chỉ mục Index tối ưu hóa truy vấn (`IDX_LOP_HOC_KH`, `IDX_DANG_KY_Lop`, `IDX_PHIEU_DK`,...).
+- Tạo 4 View tiện ích dùng chung (`v_si_so_lop`, `v_dang_ky_hoc_phi`, `v_bao_cao_thu_hoc_phi`, `v_bao_cao_ket_qua_lop`).
+
+### **Bước 2: Nạp dữ liệu mẫu chuẩn (`02_seed.sql`)**
+- Xóa sạch dữ liệu cũ và nạp bộ dữ liệu demo chuẩn hóa:
+  - 2 cơ sở (`CS01`, `CS02`).
+  - 4 khóa học (`KH_IELTS_FND`, `KH_IELTS_INT`, `KH_TOEIC_650`, `KH_GIAO_TIEP`).
+  - 6 nhân sự (3 giáo viên `GV001`–`GV003`, 3 nhân viên `NV001`–`NV003`).
+  - 6 học viên (`HV001`–`HV006`).
+  - 4 lớp học (có đủ trạng thái: còn chỗ, đầy chỗ, còn đúng 1 chỗ).
+  - 8 lượt đăng ký (có đủ: nợ tiền, nộp đủ, quá hạn, đã hủy).
+  - 5 phiếu thanh toán (tiền mặt, chuyển khoản, thẻ, có phiếu hủy).
+  - 3 đề thi, 2 bài kiểm tra và kết quả làm bài (điểm 8.0, điểm 0.0, chưa nhập điểm).
+
+### **Bước 3: Chạy kiểm thử xác minh (`03_checks.sql`)**
+- **Phần 1:** Kiểm tra số lượng bản ghi và đối chiếu kết quả 4 View.
+- **Phần 2:** Chạy thử các ca vi phạm (PK, FK, UNIQUE, CHECK số tiền âm, ngày sai) $\to$ Chứng minh MySQL từ chối và báo lỗi.
+- **Phần 3:** Cung cấp đặc tả giao dịch an toàn (`START TRANSACTION`, `SELECT ... FOR UPDATE`) chống vượt sĩ số và thu vượt công nợ.
+
+---
+
+## 4. Hướng dẫn thực thi trên MySQL / MariaDB (XAMPP)
+
+### Cách A: Sử dụng giao diện phpMyAdmin (Trực quan cho thuyết trình)
+1. Mở **XAMPP Control Panel**, nhấn **Start** cho **Apache** và **MySQL**.
+2. Mở trình duyệt, truy cập: `http://localhost/phpmyadmin/`.
+3. Nhấp vào tab **Import** (Nhập):
+   - Chọn tệp [01_schema.sql](file:///e:/BTL_CSDL/BTL-CSDL/sql/01_schema.sql) $\to$ Bấm **Go / Thực hiện**.
+   - Chọn tệp [02_seed.sql](file:///e:/BTL_CSDL/BTL-CSDL/sql/02_seed.sql) $\to$ Bấm **Go / Thực hiện**.
+4. Vào tab **SQL**, copy các truy vấn trong [03_checks.sql](file:///e:/BTL_CSDL/BTL-CSDL/sql/03_checks.sql) để kiểm tra kết quả dạng bảng.
+
+### Cách B: Sử dụng dòng lệnh Command Line / PowerShell (Chỉ 3 giây)
+Chạy trực tiếp từ terminal dự án:
+```powershell
+# 1. Chạy DDL schema (Tự tạo CSDL english_center_db nếu chưa có)
+& "C:\xampp\mysql\bin\mysql.exe" -u root --default-character-set=utf8mb4 -e "source e:/BTL_CSDL/BTL-CSDL/sql/01_schema.sql"
+
+# 2. Nạp dữ liệu mẫu seed
+& "C:\xampp\mysql\bin\mysql.exe" -u root english_center_db --default-character-set=utf8mb4 -e "source e:/BTL_CSDL/BTL-CSDL/sql/02_seed.sql"
+
+# 3. Chạy kịch bản kiểm thử xác minh
+& "C:\xampp\mysql\bin\mysql.exe" -u root english_center_db --default-character-set=utf8mb4 -e "source e:/BTL_CSDL/BTL-CSDL/sql/03_checks.sql"
+```
+
+---
+
+## 5. Cách Reset dữ liệu về trạng thái ban đầu khi Demo
+Khi các thành viên trong nhóm nhập thử dữ liệu làm biến đổi sĩ số hoặc công nợ, chỉ cần chạy lại duy nhất file `02_seed.sql`:
+- **Trong phpMyAdmin:** Mở database `english_center_db` $\to$ Tab **Import** $\to$ Chọn `02_seed.sql` $\to$ Bấm **Go**.
+- **Trong Terminal:**
+  ```powershell
+  & "C:\xampp\mysql\bin\mysql.exe" -u root english_center_db --default-character-set=utf8mb4 -e "source e:/BTL_CSDL/BTL-CSDL/sql/02_seed.sql"
+  ```
+Toàn bộ CSDL sẽ trở lại trạng thái ban đầu trong vòng dưới 1 giây mà **không cần tạo lại bảng**.
+
+---
+
+## 6. Bảng ma trận ca kiểm thử (T01–T10) và dữ liệu bàn giao cho nhóm
+
+| Mã Test | Nghiệp vụ kiểm thử | Dữ liệu mẫu tương ứng trong MySQL | Kết quả đối chiếu chuẩn | Thành viên phụ trách |
+| :--- | :--- | :--- | :--- | :--- |
+| **T01** | Đăng ký lớp còn đúng 1 chỗ | Lớp `LOP_GT_01` (Sĩ số tối đa 3, hiện đã có 2 học viên: `DK007`, `DK008`) | Đăng ký thành công, sĩ số lên 3/3, trạng thái lớp chuyển sang `DaDay`. | **Khanh** (Form Đăng ký) |
+| **T02** | Chặn đăng ký vào lớp đã đầy | Lớp `LOP_TOEIC_A` (Sĩ số tối đa 2, đã có 2 học viên: `DK005`, `DK006`) | Bị chặn, thông báo lỗi: "Lớp học đã đủ sĩ số". Không phát sinh bản ghi. | **Khanh** (Form Đăng ký) |
+| **T03** | Tái kích hoạt đăng ký đã hủy | Đăng ký `DK004` (HV004 tại lớp `LOP_IE_01` có trạng thái `DaHuy`) | Cập nhật lại bản ghi `DK004` sang `DaXacNhan`, không thêm mã mới trùng lặp. | **Khanh** (Form Đăng ký) |
+| **T04** | Thu học phí nhiều lần (nợ còn lại) | Đăng ký `DK001` (Phải thu 3.000.000đ, đã thu 1.500.000đ qua PTT001 và PTT002) | Thu thêm tối đa 1.500.000đ. Thu xong số dư = 0đ, trạng thái `DaHoanThanh`. | **Khanh** (Form Thu phí) |
+| **T05** | Chặn thu học phí vượt số dư nợ | Đăng ký `DK001` (Số dư nợ hiện tại = 1.500.000đ) | Nhập số tiền thu 2.000.000đ $\implies$ Bị từ chối: "Vượt quá công nợ còn lại". | **Khanh** (Form Thu phí) |
+| **T06** | Tìm kiếm lớp & học viên theo tiêu chí | Học viên `HV001`, lớp `LOP_IE_01`, từ khóa `IELTS` | Trả về đúng danh sách kèm số chỗ còn lại và tình trạng công nợ từ View. | **Lộc** (Màn Tìm kiếm) |
+| **T07** | Báo cáo doanh thu học phí | View `v_bao_cao_thu_hoc_phi` | Tổng thu chuẩn = **7.000.000đ** (4 phiếu hợp lệ). Phiếu hủy PTT004 bị loại bỏ. | **Huy** (Báo cáo Thu) |
+| **T08** | Báo cáo điểm: phân biệt điểm 0 và chưa nhập | Lớp `LOP_IE_01`, bài `BKT01`: `HV001` (8.0đ), `HV002` (0.0đ), `HV003` (NULL) | `HV002` hiện điểm 0.0, `HV003` hiện "Chưa nhập". Điểm TB lớp = **4.00** (8.0/2). | **Huy** (Báo cáo Điểm) |
+| **T09** | Chặn nhập số tiền thanh toán âm | Thêm `PHIEU_THANH_TOAN` có `SoTien = -500000` | Bị từ chối ngay tại CSDL bởi `CK_PHIEU_THANH_TOAN_SoTien`. | **Quang** (DDL/Constraint) |
+| **T10** | Chặn học viên đăng ký trùng lớp | Thêm `DANG_KY` với cặp (`HV001`, `LOP_IE_01`) | Bị từ chối ngay tại CSDL bởi `UQ_DANG_KY_HV_Lop`. | **Quang** (DDL/Constraint) |
+
+---
+
+## 7. Mẫu Transaction & Concurrency Locking chuẩn MySQL (Dành cho Khanh)
+
+### A. Ngăn chặn vượt sĩ số (Over-enrollment Race Condition)
+```sql
+START TRANSACTION;
+
+-- 1. Khóa dòng lớp học bằng FOR UPDATE
+SELECT MaLop, SiSoToiDa, TrangThai, HocPhi 
+FROM LOP_HOC 
+WHERE MaLop = :MaLop AND TrangThai = 'DangNhanDangKy'
+FOR UPDATE;
+
+-- 2. Đếm sĩ số thực tế
+SELECT COUNT(*) AS SiSoHienTai 
+FROM DANG_KY 
+WHERE MaLop = :MaLop AND TrangThaiDK = 'DaXacNhan';
+
+-- 3. Kiểm tra điều kiện nghiệp vụ
+-- Nếu SiSoHienTai >= SiSoToiDa:
+--     ROLLBACK;
+-- Ngược lại:
+--     INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiDK)
+--     VALUES (:MaDK, :MaHV, :MaLop, CURRENT_DATE, :HocPhi, DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY), 'DaXacNhan');
+--     COMMIT;
+```
+
+### B. Ngăn chặn thu vượt số dư (Over-collection Race Condition)
+```sql
+START TRANSACTION;
+
+-- 1. Khóa bản ghi đăng ký
+SELECT MaDK, KhoanPhaiThu, TrangThaiDK 
+FROM DANG_KY 
+WHERE MaDK = :MaDK 
+FOR UPDATE;
+
+-- 2. Tính số tiền đã thu thực tế
+SELECT COALESCE(SUM(SoTien), 0) AS TongDaThu 
+FROM PHIEU_THANH_TOAN 
+WHERE MaDK = :MaDK AND TrangThai = 'ThanhCong';
+
+-- 3. Kiểm tra công nợ:
+-- SoDuConLai = KhoanPhaiThu - TongDaThu;
+-- Nếu SoTienNop <= 0 HOẶC SoTienNop > SoDuConLai:
+--     ROLLBACK;
+-- Ngược lại:
+--     INSERT INTO PHIEU_THANH_TOAN (MaPhieu, MaDK, NgayThanhToan, SoTien, PhuongThuc, TrangThai, GhiChu)
+--     VALUES (:MaPhieu, :MaDK, CURRENT_TIMESTAMP, :SoTienNop, :PhuongThuc, 'ThanhCong', :GhiChu);
+--     Nếu SoTienNop == SoDuConLai: UPDATE DANG_KY SET TrangThaiDK = 'DaHoanThanh' WHERE MaDK = :MaDK;
+--     COMMIT;
+```

@@ -1,0 +1,329 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1900 1320" width="100%" height="100%" style="background:#F8F9FA; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;">
+  <defs>
+    <!-- Drop Shadow -->
+    <filter id="shadow" x="-5%" y="-5%" width="115%" height="115%" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="2" dy="4" stdDeviation="4" flood-opacity="0.12"/>
+    </filter>
+    
+    <!-- Crow's Foot and One Markers -->
+    <marker id="crowsfoot" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 1 L 10 6 L 0 11 M 10 1 L 10 11" fill="none" stroke="#1F497D" stroke-width="1.6"/>
+    </marker>
+    <marker id="crowsfoot_green" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 1 L 10 6 L 0 11 M 10 1 L 10 11" fill="none" stroke="#385723" stroke-width="1.6"/>
+    </marker>
+    <marker id="crowsfoot_purple" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 1 L 10 6 L 0 11 M 10 1 L 10 11" fill="none" stroke="#7030A0" stroke-width="1.6"/>
+    </marker>
+    <marker id="crowsfoot_blue" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M 0 1 L 10 6 L 0 11 M 10 1 L 10 11" fill="none" stroke="#2E74B5" stroke-width="1.6"/>
+    </marker>
+    <marker id="one" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 4 1 L 4 11 M 8 1 L 8 11" fill="none" stroke="#1F497D" stroke-width="1.5"/>
+    </marker>
+    <marker id="one_green" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 4 1 L 4 11 M 8 1 L 8 11" fill="none" stroke="#385723" stroke-width="1.5"/>
+    </marker>
+    <marker id="one_purple" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 4 1 L 4 11 M 8 1 L 8 11" fill="none" stroke="#7030A0" stroke-width="1.5"/>
+    </marker>
+    <marker id="one_blue" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 4 1 L 4 11 M 8 1 L 8 11" fill="none" stroke="#2E74B5" stroke-width="1.5"/>
+    </marker>
+    <marker id="isa_arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#385723"/>
+    </marker>
+  </defs>
+
+  <!-- TITLE HEADER -->
+  <rect x="60" y="20" width="1780" height="60" rx="8" fill="#1F497D" filter="url(#shadow)"/>
+  <text x="950" y="45" fill="#FFFFFF" font-size="20" font-weight="bold" text-anchor="middle">DATA DIAGRAM (MÔ HÌNH DỮ LIỆU QUAN HỆ VẬT LÝ) - TRUNG TÂM TIẾNG ANH</text>
+  <text x="950" y="68" fill="#D9E1F2" font-size="13" text-anchor="middle">Nhóm 2 · Phụ trách: Quang · Chuẩn hóa 3NF / BCNF · Bố cục lưới trực giao vuông góc chuẩn mực</text>
+
+  <!-- ======================================================================= -->
+  <!-- ROW 1: GHI DANH & THANH TOÁN (y: 110 -> 330)                           -->
+  <!-- ======================================================================= -->
+
+  <!-- TABLE 1: HOC_VIEN (Col 2, Row 1) -->
+  <g transform="translate(420, 110)" filter="url(#shadow)">
+    <rect width="280" height="220" rx="6" fill="#FFFFFF" stroke="#1F497D" stroke-width="2"/>
+    <rect width="280" height="32" rx="6" fill="#1F497D"/>
+    <text x="140" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">HOC_VIEN</text>
+    <rect x="0" y="32" width="280" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaHV</text>
+    <text x="190" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="72" fill="#000000" font-size="11">HoTen</text><text x="190" y="72" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="45" y="96" fill="#000000" font-size="11">NgaySinh</text><text x="190" y="96" fill="#595959" font-size="11">DATE</text>
+    <text x="45" y="120" fill="#000000" font-size="11">GioiTinh</text><text x="190" y="120" fill="#595959" font-size="11">VARCHAR(10)</text>
+    <rect x="0" y="128" width="280" height="24" fill="#FFF2CC"/>
+    <text x="12" y="144" fill="#B25900" font-size="11" font-weight="bold">UQ</text>
+    <text x="45" y="144" fill="#000000" font-size="11">SDT</text><text x="190" y="144" fill="#595959" font-size="11">VARCHAR(15)</text>
+    <rect x="0" y="152" width="280" height="24" fill="#FFF2CC"/>
+    <text x="12" y="168" fill="#B25900" font-size="11" font-weight="bold">UQ</text>
+    <text x="45" y="168" fill="#000000" font-size="11">Email</text><text x="190" y="168" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="45" y="192" fill="#000000" font-size="11">DiaChi</text><text x="190" y="192" fill="#595959" font-size="11">VARCHAR(255)</text>
+    <text x="45" y="212" fill="#000000" font-size="11">NgayTao</text><text x="190" y="212" fill="#595959" font-size="11">DATE</text>
+  </g>
+
+  <!-- TABLE 2: DANG_KY (Col 3, Row 1) -->
+  <g transform="translate(800, 110)" filter="url(#shadow)">
+    <rect width="300" height="210" rx="6" fill="#FFFFFF" stroke="#1F497D" stroke-width="2"/>
+    <rect width="300" height="32" rx="6" fill="#1F497D"/>
+    <text x="150" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">DANG_KY</text>
+    <rect x="0" y="32" width="300" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaDK</text><text x="195" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="56" width="300" height="24" fill="#E1D5E7"/>
+    <text x="10" y="72" fill="#7030A0" font-size="10" font-weight="bold">FK,UQ</text>
+    <text x="50" y="72" fill="#000000" font-size="11">MaHV</text><text x="195" y="72" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="80" width="300" height="24" fill="#E1D5E7"/>
+    <text x="10" y="96" fill="#7030A0" font-size="10" font-weight="bold">FK,UQ</text>
+    <text x="50" y="96" fill="#000000" font-size="11">MaLop</text><text x="195" y="96" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="120" fill="#000000" font-size="11">NgayDK</text><text x="195" y="120" fill="#595959" font-size="11">DATE</text>
+    <text x="45" y="144" fill="#000000" font-size="11" font-weight="bold">KhoanPhaiThu</text><text x="195" y="144" fill="#595959" font-size="11">DECIMAL(12,2)</text>
+    <text x="45" y="168" fill="#000000" font-size="11">HanNop</text><text x="195" y="168" fill="#595959" font-size="11">DATE</text>
+    <text x="45" y="192" fill="#000000" font-size="11">TrangThaiDK</text><text x="195" y="192" fill="#595959" font-size="11">VARCHAR(20)</text>
+  </g>
+
+  <!-- TABLE 3: PHIEU_THANH_TOAN (Col 4, Row 1) -->
+  <g transform="translate(1200, 110)" filter="url(#shadow)">
+    <rect width="280" height="210" rx="6" fill="#FFFFFF" stroke="#1F497D" stroke-width="2"/>
+    <rect width="280" height="32" rx="6" fill="#1F497D"/>
+    <text x="140" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">PHIEU_THANH_TOAN</text>
+    <rect x="0" y="32" width="280" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaPhieu</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="56" width="280" height="24" fill="#E1D5E7"/>
+    <text x="12" y="72" fill="#7030A0" font-size="11" font-weight="bold">FK</text>
+    <text x="45" y="72" fill="#000000" font-size="11">MaDK</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="96" fill="#000000" font-size="11">NgayThanhToan</text><text x="180" y="96" fill="#595959" font-size="11">TIMESTAMP</text>
+    <text x="45" y="120" fill="#000000" font-size="11" font-weight="bold">SoTien</text><text x="180" y="120" fill="#595959" font-size="11">DECIMAL(12,2)</text>
+    <text x="45" y="144" fill="#000000" font-size="11">PhuongThuc</text><text x="180" y="144" fill="#595959" font-size="11">VARCHAR(30)</text>
+    <text x="45" y="168" fill="#000000" font-size="11">TrangThai</text><text x="180" y="168" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="192" fill="#000000" font-size="11">GhiChu</text><text x="180" y="192" fill="#595959" font-size="11">VARCHAR(255)</text>
+  </g>
+
+  <!-- ======================================================================= -->
+  <!-- ROW 2: TỔ CHỨC LỚP & GIẢNG DẠY (y: 410 -> 680)                         -->
+  <!-- ======================================================================= -->
+
+  <!-- TABLE 4: CO_SO (Col 1, Row 2) -->
+  <g transform="translate(60, 410)" filter="url(#shadow)">
+    <rect width="260" height="150" rx="6" fill="#FFFFFF" stroke="#2E74B5" stroke-width="2"/>
+    <rect width="260" height="32" rx="6" fill="#2E74B5"/>
+    <text x="130" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">CO_SO</text>
+    <rect x="0" y="32" width="260" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="40" y="48" fill="#000000" font-size="11" font-weight="bold">MaCS</text><text x="175" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="40" y="72" fill="#000000" font-size="11">TenCS</text><text x="175" y="72" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="40" y="96" fill="#000000" font-size="11">DiaChi</text><text x="175" y="96" fill="#595959" font-size="11">VARCHAR(255)</text>
+    <text x="40" y="120" fill="#000000" font-size="11">SDT</text><text x="175" y="120" fill="#595959" font-size="11">VARCHAR(15)</text>
+    <text x="40" y="140" fill="#000000" font-size="11">TrangThai</text><text x="175" y="140" fill="#595959" font-size="11">VARCHAR(20)</text>
+  </g>
+
+  <!-- TABLE 5: KHOA_HOC (Col 1, Row 2.8) -->
+  <g transform="translate(60, 600)" filter="url(#shadow)">
+    <rect width="260" height="170" rx="6" fill="#FFFFFF" stroke="#2E74B5" stroke-width="2"/>
+    <rect width="260" height="32" rx="6" fill="#2E74B5"/>
+    <text x="130" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">KHOA_HOC</text>
+    <rect x="0" y="32" width="260" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="40" y="48" fill="#000000" font-size="11" font-weight="bold">MaKH</text><text x="175" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="40" y="72" fill="#000000" font-size="11">TenKH</text><text x="175" y="72" fill="#595959" font-size="11">VARCHAR(150)</text>
+    <text x="40" y="96" fill="#000000" font-size="11">GiaKH</text><text x="175" y="96" fill="#595959" font-size="11">DECIMAL(12,2)</text>
+    <text x="40" y="120" fill="#000000" font-size="11">ThoiLuong</text><text x="175" y="120" fill="#595959" font-size="11">INT</text>
+    <text x="40" y="144" fill="#000000" font-size="11">MoTa</text><text x="175" y="144" fill="#595959" font-size="11">TEXT</text>
+    <text x="40" y="164" fill="#000000" font-size="11">TrangThai</text><text x="175" y="164" fill="#595959" font-size="11">VARCHAR(20)</text>
+  </g>
+
+  <!-- TABLE 6: LOP_HOC (Col 3, Row 2 - TRUNG TÂM) -->
+  <g transform="translate(800, 410)" filter="url(#shadow)">
+    <rect width="300" height="270" rx="6" fill="#FFFFFF" stroke="#1F497D" stroke-width="2"/>
+    <rect width="300" height="32" rx="6" fill="#1F497D"/>
+    <text x="150" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">LOP_HOC</text>
+    <rect x="0" y="32" width="300" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaLop</text><text x="195" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="72" fill="#000000" font-size="11">TenLop</text><text x="195" y="72" fill="#595959" font-size="11">VARCHAR(150)</text>
+    <rect x="0" y="80" width="300" height="24" fill="#E1D5E7"/>
+    <text x="12" y="96" fill="#7030A0" font-size="11" font-weight="bold">FK</text>
+    <text x="45" y="96" fill="#000000" font-size="11">MaKH</text><text x="195" y="96" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="104" width="300" height="24" fill="#E1D5E7"/>
+    <text x="12" y="120" fill="#7030A0" font-size="11" font-weight="bold">FK</text>
+    <text x="45" y="120" fill="#000000" font-size="11">MaCS</text><text x="195" y="120" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="144" fill="#000000" font-size="11">LichHoc</text><text x="195" y="144" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="45" y="168" fill="#000000" font-size="11">SiSoToiDa</text><text x="195" y="168" fill="#595959" font-size="11">INT</text>
+    <text x="45" y="192" fill="#000000" font-size="11">HocPhi</text><text x="195" y="192" fill="#595959" font-size="11">DECIMAL(12,2)</text>
+    <text x="45" y="216" fill="#000000" font-size="11">TrangThai</text><text x="195" y="216" fill="#595959" font-size="11">VARCHAR(25)</text>
+    <text x="45" y="240" fill="#000000" font-size="11">NgayKhaiGiang</text><text x="195" y="240" fill="#595959" font-size="11">DATE</text>
+    <text x="45" y="260" fill="#000000" font-size="11">NgayKetThuc</text><text x="195" y="260" fill="#595959" font-size="11">DATE</text>
+  </g>
+
+  <!-- TABLE 7: GIANG_DAY (Col 4, Row 2) -->
+  <g transform="translate(1200, 410)" filter="url(#shadow)">
+    <rect width="280" height="140" rx="6" fill="#FFFFFF" stroke="#1F497D" stroke-width="2"/>
+    <rect width="280" height="32" rx="6" fill="#1F497D"/>
+    <text x="140" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">GIANG_DAY</text>
+    <rect x="0" y="32" width="280" height="24" fill="#E1D5E7"/>
+    <text x="10" y="48" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="48" fill="#000000" font-size="11" font-weight="bold">MaNS</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="56" width="280" height="24" fill="#E1D5E7"/>
+    <text x="10" y="72" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="72" fill="#000000" font-size="11" font-weight="bold">MaLop</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="50" y="96" fill="#000000" font-size="11">VaiTro</text><text x="180" y="96" fill="#595959" font-size="11">VARCHAR(30)</text>
+    <text x="50" y="120" fill="#000000" font-size="11">NgayPhanCong</text><text x="180" y="120" fill="#595959" font-size="11">DATE</text>
+  </g>
+
+  <!-- TABLE 8: GIAO_VIEN (Col 4, Row 2.8) -->
+  <g transform="translate(1200, 620)" filter="url(#shadow)">
+    <rect width="280" height="120" rx="6" fill="#FFFFFF" stroke="#385723" stroke-width="2"/>
+    <rect width="280" height="32" rx="6" fill="#385723"/>
+    <text x="140" y="21" fill="#FFFFFF" font-size="13" font-weight="bold" text-anchor="middle">GIAO_VIEN (ISA)</text>
+    <rect x="0" y="32" width="280" height="24" fill="#E1D5E7"/>
+    <text x="10" y="48" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="48" fill="#000000" font-size="11" font-weight="bold">MaNS</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="50" y="72" fill="#000000" font-size="11">HocVi</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(50)</text>
+    <text x="50" y="96" fill="#000000" font-size="11">ChuyenMon</text><text x="180" y="96" fill="#595959" font-size="11">VARCHAR(100)</text>
+  </g>
+
+  <!-- TABLE 9: NHAN_VIEN (Col 4, Row 3.5) -->
+  <g transform="translate(1200, 790)" filter="url(#shadow)">
+    <rect width="280" height="100" rx="6" fill="#FFFFFF" stroke="#385723" stroke-width="2"/>
+    <rect width="280" height="32" rx="6" fill="#385723"/>
+    <text x="140" y="21" fill="#FFFFFF" font-size="13" font-weight="bold" text-anchor="middle">NHAN_VIEN (ISA)</text>
+    <rect x="0" y="32" width="280" height="24" fill="#E1D5E7"/>
+    <text x="10" y="48" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="48" fill="#000000" font-size="11" font-weight="bold">MaNS</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="50" y="72" fill="#000000" font-size="11">ViTri</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(50)</text>
+  </g>
+
+  <!-- TABLE 10: NHAN_SU (Col 5, Row 2.5) -->
+  <g transform="translate(1580, 560)" filter="url(#shadow)">
+    <rect width="260" height="230" rx="6" fill="#FFFFFF" stroke="#385723" stroke-width="2"/>
+    <rect width="260" height="32" rx="6" fill="#385723"/>
+    <text x="130" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">NHAN_SU (Supertype)</text>
+    <rect x="0" y="32" width="260" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaNS</text><text x="175" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="72" fill="#000000" font-size="11">HoTen</text><text x="175" y="72" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="45" y="96" fill="#000000" font-size="11">NgaySinh</text><text x="175" y="96" fill="#595959" font-size="11">DATE</text>
+    <text x="45" y="120" fill="#000000" font-size="11">GioiTinh</text><text x="175" y="120" fill="#595959" font-size="11">VARCHAR(10)</text>
+    <rect x="0" y="128" width="260" height="24" fill="#FFF2CC"/>
+    <text x="12" y="144" fill="#B25900" font-size="11" font-weight="bold">UQ</text>
+    <text x="45" y="144" fill="#000000" font-size="11">SDT</text><text x="175" y="144" fill="#595959" font-size="11">VARCHAR(15)</text>
+    <rect x="0" y="152" width="260" height="24" fill="#FFF2CC"/>
+    <text x="12" y="168" fill="#B25900" font-size="11" font-weight="bold">UQ</text>
+    <text x="45" y="168" fill="#000000" font-size="11">Email</text><text x="175" y="168" fill="#595959" font-size="11">VARCHAR(100)</text>
+    <text x="45" y="192" fill="#000000" font-size="11">DiaChi</text><text x="175" y="192" fill="#595959" font-size="11">VARCHAR(255)</text>
+    <text x="45" y="212" fill="#000000" font-size="11">TrangThai</text><text x="175" y="212" fill="#595959" font-size="11">VARCHAR(20)</text>
+  </g>
+
+  <!-- ======================================================================= -->
+  <!-- ROW 3: KHẢO THÍ & BÀI KIỂM TRA (y: 770 -> 990)                         -->
+  <!-- ======================================================================= -->
+
+  <!-- TABLE 11: DE_THI (Col 1, Row 3) -->
+  <g transform="translate(60, 830)" filter="url(#shadow)">
+    <rect width="260" height="160" rx="6" fill="#FFFFFF" stroke="#7030A0" stroke-width="2"/>
+    <rect width="260" height="32" rx="6" fill="#7030A0"/>
+    <text x="130" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">DE_THI</text>
+    <rect x="0" y="32" width="260" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="40" y="48" fill="#000000" font-size="11" font-weight="bold">MaDe</text><text x="175" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="40" y="72" fill="#000000" font-size="11">TenDe</text><text x="175" y="72" fill="#595959" font-size="11">VARCHAR(150)</text>
+    <text x="40" y="96" fill="#000000" font-size="11">ThoiLuong</text><text x="175" y="96" fill="#595959" font-size="11">INT</text>
+    <text x="40" y="120" fill="#000000" font-size="11">LoaiDe</text><text x="175" y="120" fill="#595959" font-size="11">VARCHAR(50)</text>
+    <text x="40" y="144" fill="#000000" font-size="11">MoTa</text><text x="175" y="144" fill="#595959" font-size="11">TEXT</text>
+  </g>
+
+  <!-- TABLE 12: BAI_KIEM_TRA (Col 3, Row 3) -->
+  <g transform="translate(800, 770)" filter="url(#shadow)">
+    <rect width="300" height="210" rx="6" fill="#FFFFFF" stroke="#7030A0" stroke-width="2"/>
+    <rect width="300" height="32" rx="6" fill="#7030A0"/>
+    <text x="150" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">BAI_KIEM_TRA</text>
+    <rect x="0" y="32" width="300" height="24" fill="#E9EEF4"/>
+    <text x="12" y="48" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="45" y="48" fill="#000000" font-size="11" font-weight="bold">MaBKT</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="72" fill="#000000" font-size="11">TenBKT</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(150)</text>
+    <rect x="0" y="80" width="300" height="24" fill="#E1D5E7"/>
+    <text x="12" y="96" fill="#7030A0" font-size="11" font-weight="bold">FK</text>
+    <text x="45" y="96" fill="#000000" font-size="11">MaLop</text><text x="180" y="96" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="104" width="300" height="24" fill="#E1D5E7"/>
+    <text x="12" y="120" fill="#7030A0" font-size="11" font-weight="bold">FK</text>
+    <text x="45" y="120" fill="#000000" font-size="11">MaDe</text><text x="180" y="120" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <text x="45" y="144" fill="#000000" font-size="11">LoaiBKT</text><text x="180" y="144" fill="#595959" font-size="11">VARCHAR(50)</text>
+    <text x="45" y="168" fill="#000000" font-size="11">ThangDiem</text><text x="180" y="168" fill="#595959" font-size="11">DECIMAL(4,2)</text>
+    <text x="45" y="192" fill="#000000" font-size="11">NgayKiemTra</text><text x="180" y="192" fill="#595959" font-size="11">DATE</text>
+  </g>
+
+  <!-- ======================================================================= -->
+  <!-- ROW 4: KẾT QUẢ THI (y: 1060 -> 1250)                                    -->
+  <!-- ======================================================================= -->
+
+  <!-- TABLE 13: LAM_BAI (Col 3, Row 4) -->
+  <g transform="translate(800, 1060)" filter="url(#shadow)">
+    <rect width="300" height="190" rx="6" fill="#FFFFFF" stroke="#7030A0" stroke-width="2"/>
+    <rect width="300" height="32" rx="6" fill="#7030A0"/>
+    <text x="150" y="21" fill="#FFFFFF" font-size="14" font-weight="bold" text-anchor="middle">LAM_BAI</text>
+    <rect x="0" y="32" width="300" height="24" fill="#E1D5E7"/>
+    <text x="10" y="48" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="48" fill="#000000" font-size="11" font-weight="bold">MaHV</text><text x="180" y="48" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="56" width="300" height="24" fill="#E1D5E7"/>
+    <text x="10" y="72" fill="#C00000" font-size="10" font-weight="bold">PK,FK</text>
+    <text x="50" y="72" fill="#000000" font-size="11" font-weight="bold">MaBKT</text><text x="180" y="72" fill="#595959" font-size="11">VARCHAR(20)</text>
+    <rect x="0" y="80" width="300" height="24" fill="#E9EEF4"/>
+    <text x="12" y="96" fill="#C00000" font-size="11" font-weight="bold">PK</text>
+    <text x="50" y="96" fill="#000000" font-size="11" font-weight="bold">LanThi</text><text x="180" y="96" fill="#595959" font-size="11">INT</text>
+    <text x="50" y="120" fill="#000000" font-size="11">NgayThi</text><text x="180" y="120" fill="#595959" font-size="11">DATE</text>
+    <text x="50" y="144" fill="#000000" font-size="11" font-weight="bold">Diem</text><text x="180" y="144" fill="#595959" font-size="11">DECIMAL(4,2)</text>
+    <text x="50" y="168" fill="#000000" font-size="11">GhiChu</text><text x="180" y="168" fill="#595959" font-size="11">VARCHAR(255)</text>
+  </g>
+
+  <!-- ======================================================================= -->
+  <!-- RELATIONSHIP CONNECTOR LINES (100% TRỰC GIAO VUÔNG GÓC, THẲNG HÀNG)   -->
+  <!-- ======================================================================= -->
+
+  <!-- 1. HOC_VIEN (1) -> DANG_KY (N) [Thẳng hàng ngang tại y = 215] -->
+  <path d="M 700 215 L 800 215" fill="none" stroke="#1F497D" stroke-width="2.5" marker-start="url(#one)" marker-end="url(#crowsfoot)"/>
+
+  <!-- 2. DANG_KY (1) -> PHIEU_THANH_TOAN (N) [Thẳng hàng ngang tại y = 215] -->
+  <path d="M 1100 215 L 1200 215" fill="none" stroke="#1F497D" stroke-width="2.5" marker-start="url(#one)" marker-end="url(#crowsfoot)"/>
+
+  <!-- 3. LOP_HOC (1) -> DANG_KY (N) [Thẳng hàng đứng tại x = 950] -->
+  <path d="M 950 410 L 950 320" fill="none" stroke="#1F497D" stroke-width="2.5" marker-start="url(#one)" marker-end="url(#crowsfoot)"/>
+
+  <!-- 4. CO_SO (1) -> LOP_HOC (N) [Thẳng hàng ngang tại y = 480] -->
+  <path d="M 320 480 L 800 480" fill="none" stroke="#2E74B5" stroke-width="2.5" marker-start="url(#one_blue)" marker-end="url(#crowsfoot_blue)"/>
+
+  <!-- 5. KHOA_HOC (1) -> LOP_HOC (N) [Thẳng hàng ngang tại y = 650] -->
+  <path d="M 320 650 L 800 650" fill="none" stroke="#2E74B5" stroke-width="2.5" marker-start="url(#one_blue)" marker-end="url(#crowsfoot_blue)"/>
+
+  <!-- 6. LOP_HOC (1) -> GIANG_DAY (N) [Thẳng hàng ngang tại y = 480] -->
+  <path d="M 1100 480 L 1200 480" fill="none" stroke="#1F497D" stroke-width="2.5" marker-start="url(#one)" marker-end="url(#crowsfoot)"/>
+
+  <!-- 7. GIAO_VIEN (1) -> GIANG_DAY (N) [Thẳng hàng đứng tại x = 1340] -->
+  <path d="M 1340 620 L 1340 550" fill="none" stroke="#385723" stroke-width="2.5" marker-start="url(#one_green)" marker-end="url(#crowsfoot_green)"/>
+
+  <!-- 8. NHAN_SU -> GIAO_VIEN (ISA 1-1) [Thẳng hàng ngang tại y = 680] -->
+  <path d="M 1580 680 L 1480 680" fill="none" stroke="#385723" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#isa_arrow)"/>
+  <text x="1530" y="670" fill="#385723" font-size="11" font-weight="bold" text-anchor="middle">ISA</text>
+
+  <!-- 9. NHAN_SU -> NHAN_VIEN (ISA 1-1) [Bậc thang vuông góc 90 độ chuẩn trong rãnh 100px] -->
+  <path d="M 1580 760 L 1530 760 L 1530 840 L 1480 840" fill="none" stroke="#385723" stroke-width="2" stroke-dasharray="6,4" marker-end="url(#isa_arrow)"/>
+  <text x="1550" y="830" fill="#385723" font-size="11" font-weight="bold">ISA</text>
+
+  <!-- 10. LOP_HOC (1) -> BAI_KIEM_TRA (N) [Thẳng hàng đứng tại x = 950] -->
+  <path d="M 950 680 L 950 770" fill="none" stroke="#7030A0" stroke-width="2.5" marker-start="url(#one_purple)" marker-end="url(#crowsfoot_purple)"/>
+
+  <!-- 11. DE_THI (1) -> BAI_KIEM_TRA (N) [Thẳng hàng ngang tại y = 910] -->
+  <path d="M 320 910 L 800 910" fill="none" stroke="#7030A0" stroke-width="2.5" marker-start="url(#one_purple)" marker-end="url(#crowsfoot_purple)"/>
+
+  <!-- 12. BAI_KIEM_TRA (1) -> LAM_BAI (N) [Thẳng hàng đứng tại x = 950] -->
+  <path d="M 950 980 L 950 1060" fill="none" stroke="#7030A0" stroke-width="2.5" marker-start="url(#one_purple)" marker-end="url(#crowsfoot_purple)"/>
+
+  <!-- 13. HOC_VIEN (1) -> LAM_BAI (N) [Góc vuông 90 độ chuẩn: x = 560 -> y = 1155 -> x = 800] -->
+  <path d="M 560 330 L 560 1155 L 800 1155" fill="none" stroke="#7030A0" stroke-width="2.5" marker-start="url(#one_purple)" marker-end="url(#crowsfoot_purple)"/>
+  <text x="575" y="1145" fill="#7030A0" font-size="12" font-weight="bold">Học viên tham gia làm bài (1 - N)</text>
+
+</svg>

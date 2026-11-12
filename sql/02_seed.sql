@@ -1,12 +1,20 @@
 -- ============================================================================
--- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH
+-- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH (MYSQL / MARIADB VERSION)
 -- Bài tập lớn môn Cơ sở dữ liệu · Nhóm 2 · PTIT
 -- Phụ trách thiết kế và cài đặt CSDL (Tiêu chí 3, 4, 8): Quang
 -- Tệp tin: 02_seed.sql
--- Mục đích: Dữ liệu mẫu chuẩn hóa phục vụ kịch bản demo và các ca kiểm thử T01–T10
+-- Mục đích: Dữ liệu mẫu chuẩn hóa trên MySQL/MariaDB phục vụ demo các ca kiểm thử T01–T10
 -- ============================================================================
 
--- Xóa sạch dữ liệu cũ theo thứ tự ngược
+-- Kích hoạt database
+USE english_center_db;
+
+/*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+
+-- ----------------------------------------------------------------------------
+-- 0. XÓA SẠCH DỮ LIỆU CŨ ĐỂ ĐẶT LẠI TRẠNG THÁI DEMO BAN ĐẦU
+-- ----------------------------------------------------------------------------
 DELETE FROM LAM_BAI;
 DELETE FROM BAI_KIEM_TRA;
 DELETE FROM DE_THI;
@@ -164,8 +172,5 @@ INSERT INTO LAM_BAI (MaHV, MaBKT, LanThi, NgayThi, Diem, GhiChu) VALUES
 -- HV002 làm BKT01: đạt 0.0 điểm (Ca điểm 0 đã nhập thực tế, không được nhầm với chưa nhập)
 ('HV002', 'BKT01', 1, '2026-11-05', 0.00, 'Bỏ bài trắng hoặc vi phạm quy chế');
 
--- LƯU Ý QUAN TRỌNG:
--- Học viên HV003 có đăng ký hợp lệ (DK003) trong lớp LOP_IE_01, nhưng CHƯA CÓ BẢN GHI trong LAM_BAI.
--- Khi truy vấn báo cáo của Huy (LEFT JOIN), HV003 sẽ xuất hiện với Diem = NULL (Chưa nhập điểm).
--- Điểm trung bình của BKT01 tính trên các điểm đã nhập: (8.00 + 0.00) / 2 = 4.00.
-
+-- Khôi phục kiểm tra khóa ngoại
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

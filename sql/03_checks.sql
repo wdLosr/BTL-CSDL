@@ -1,11 +1,14 @@
 -- ============================================================================
--- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH
+-- HỆ THỐNG QUẢN LÝ TRUNG TÂM TIẾNG ANH (MYSQL / MARIADB VERSION)
 -- Bài tập lớn môn Cơ sở dữ liệu · Nhóm 2 · PTIT
 -- Phụ trách thiết kế và cài đặt CSDL (Tiêu chí 3, 4, 8): Quang
 -- Tệp tin: 03_checks.sql
 -- Mục đích: Kịch bản kiểm thử toàn vẹn dữ liệu, kiểm tra ràng buộc (PK, FK, UNIQUE, CHECK),
 --          xác minh các View dùng chung, và đặc tả giao dịch an toàn (Transaction Locking)
 -- ============================================================================
+
+-- Kích hoạt database
+USE english_center_db;
 
 -- ============================================================================
 -- PHẦN 1: KIỂM TRA DỮ LIỆU ĐÃ SEED (POSITIVE VERIFICATION)
@@ -133,14 +136,14 @@ GROUP BY MaBKT, TenBKT;
 
 -- ============================================================================
 -- PHẦN 2: KIỂM TRA CÁC RÀNG BUỘC TOÀN VẸN (NEGATIVE TESTS - BẮT BUỘC BỊ TỪ CHỐI)
--- Hướng dẫn: Khi chạy các câu lệnh dưới đây, DBMS PHẢI báo lỗi và từ chối.
+-- Hướng dẫn: Khi chạy các câu lệnh dưới đây, MySQL/MariaDB PHẢI báo lỗi và từ chối.
 -- Mỗi câu lệnh minh họa một ràng buộc đã định nghĩa trong DDL 01_schema.sql.
 -- ============================================================================
 
 -- ----------------------------------------------------------------------------
 -- TEST 2.1: VI PHẠM KHÓA CHÍNH (PRIMARY KEY VIOLATION)
 -- Mô tả: Thêm mới một cơ sở có mã đã tồn tại (CS01).
--- Kỳ vọng: Lỗi "duplicate key value violates unique constraint PK_CO_SO"
+-- Kỳ vọng MySQL: Lỗi "Duplicate entry 'CS01' for key 'PRIMARY'"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO CO_SO (MaCS, TenCS, DiaChi, SDT, TrangThai)
 -- VALUES ('CS01', 'Cơ sở Trùng Mã', '123 Đường Láng', '0988888888', 'HoatDong');
@@ -148,27 +151,27 @@ GROUP BY MaBKT, TenBKT;
 -- ----------------------------------------------------------------------------
 -- TEST 2.2: VI PHẠM RÀNG BUỘC DUY NHẤT (UNIQUE VIOLATION)
 -- Mô tả 2.2.1: Đăng ký học viên mới với Số điện thoại đã có trong hệ thống.
--- Kỳ vọng: Lỗi "violates unique constraint UQ_HOC_VIEN_SDT"
+-- Kỳ vọng MySQL: Lỗi "Duplicate entry '0901112233' for key 'UQ_HOC_VIEN_SDT'"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO HOC_VIEN (MaHV, HoTen, NgaySinh, GioiTinh, SDT, Email, DiaChi, NgayTao)
 -- VALUES ('HV999', 'Nguyễn Trùng SDT', '2004-01-01', 'Nam', '0901112233', 'unique.test@gmail.com', 'HN', CURRENT_DATE);
 
 -- Mô tả 2.2.2: Cùng một học viên đăng ký 2 lần vào CÙNG MỘT LỚP HỌC.
--- Kỳ vọng: Lỗi "violates unique constraint UQ_DANG_KY_HV_Lop"
+-- Kỳ vọng MySQL: Lỗi "Duplicate entry 'HV001-LOP_IE_01' for key 'UQ_DANG_KY_HV_Lop'"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiDK)
--- VALUES ('DK999', 'HV001', 'LOP_IE_01', CURRENT_DATE, 3000000.00, CURRENT_DATE + 10, 'DaXacNhan');
+-- VALUES ('DK999', 'HV001', 'LOP_IE_01', CURRENT_DATE, 3000000.00, DATE_ADD(CURRENT_DATE, INTERVAL 10 DAY), 'DaXacNhan');
 
 -- ----------------------------------------------------------------------------
 -- TEST 2.3: VI PHẠM KHÓA NGOẠI (FOREIGN KEY VIOLATION)
 -- Mô tả 2.3.1: Đăng ký học cho một mã học viên KHÔNG TỒN TẠI (HV999).
--- Kỳ vọng: Lỗi "violates foreign key constraint FK_DANG_KY_HOC_VIEN"
+-- Kỳ vọng MySQL: Lỗi "Cannot add or update a child row: a foreign key constraint fails (`FK_DANG_KY_HOC_VIEN`)"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiDK)
--- VALUES ('DK998', 'HV999', 'LOP_GT_01', CURRENT_DATE, 2000000.00, CURRENT_DATE + 10, 'DaXacNhan');
+-- VALUES ('DK998', 'HV999', 'LOP_GT_01', CURRENT_DATE, 2000000.00, DATE_ADD(CURRENT_DATE, INTERVAL 10 DAY), 'DaXacNhan');
 
 -- Mô tả 2.3.2: Lập phiếu thu cho một mã đăng ký KHÔNG TỒN TẠI (DK999).
--- Kỳ vọng: Lỗi "violates foreign key constraint FK_PHIEU_THANH_TOAN_DANG_KY"
+-- Kỳ vọng MySQL: Lỗi "Cannot add or update a child row: a foreign key constraint fails (`FK_PHIEU_THANH_TOAN_DANG_KY`)"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO PHIEU_THANH_TOAN (MaPhieu, MaDK, NgayThanhToan, SoTien, PhuongThuc, TrangThai)
 -- VALUES ('PTT999', 'DK999', CURRENT_TIMESTAMP, 500000.00, 'TienMat', 'ThanhCong');
@@ -178,38 +181,38 @@ GROUP BY MaBKT, TenBKT;
 -- ----------------------------------------------------------------------------
 
 -- Mô tả 2.4.1: Thu học phí với số tiền âm hoặc bằng 0 (SoTien <= 0).
--- Kỳ vọng: Lỗi "violates check constraint CK_PHIEU_THANH_TOAN_SoTien"
+-- Kỳ vọng MySQL: Lỗi "Check constraint 'CK_PHIEU_THANH_TOAN_SoTien' is violated"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO PHIEU_THANH_TOAN (MaPhieu, MaDK, NgayThanhToan, SoTien, PhuongThuc, TrangThai)
 -- VALUES ('PTT998', 'DK001', CURRENT_TIMESTAMP, -500000.00, 'TienMat', 'ThanhCong');
 
 -- Mô tả 2.4.2: Ngày kết thúc lớp học trước Ngày khai giảng (NgayKetThuc < NgayKhaiGiang).
--- Kỳ vọng: Lỗi "violates check constraint CK_LOP_HOC_Ngay"
+-- Kỳ vọng MySQL: Lỗi "Check constraint 'CK_LOP_HOC_Ngay' is violated"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO LOP_HOC (MaLop, TenLop, MaKH, MaCS, LichHoc, SiSoToiDa, HocPhi, TrangThai, NgayKhaiGiang, NgayKetThuc)
 -- VALUES ('LOP_ERR', 'Lớp Sai Ngày', 'KH_GIAO_TIEP', 'CS01', 'T2-T4', 20, 2000000.00, 'ChuanBi', '2026-12-01', '2026-10-01');
 
 -- Mô tả 2.4.3: Hạn nộp học phí trước Ngày đăng ký (HanNop < NgayDK).
--- Kỳ vọng: Lỗi "violates check constraint CK_DANG_KY_HanNop"
+-- Kỳ vọng MySQL: Lỗi "Check constraint 'CK_DANG_KY_HanNop' is violated"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiDK)
 -- VALUES ('DK997', 'HV003', 'LOP_GT_01', '2026-11-10', 2000000.00, '2026-11-01', 'DaXacNhan');
 
 -- Mô tả 2.4.4: Nhập điểm số âm vào bảng kết quả làm bài (Diem < 0).
--- Kỳ vọng: Lỗi "violates check constraint CK_LAM_BAI_Diem"
+-- Kỳ vọng MySQL: Lỗi "Check constraint 'CK_LAM_BAI_Diem' is violated"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO LAM_BAI (MaHV, MaBKT, LanThi, NgayThi, Diem)
 -- VALUES ('HV003', 'BKT01', 1, CURRENT_DATE, -2.50);
 
 -- Mô tả 2.4.5: Nhập giá trị sai danh mục quy định (Ví dụ chức vụ nhân viên không hợp lệ).
--- Kỳ vọng: Lỗi "violates check constraint CK_NHAN_VIEN_ViTri"
+-- Kỳ vọng MySQL: Lỗi "Check constraint 'CK_NHAN_VIEN_ViTri' is violated"
 -- ----------------------------------------------------------------------------
 -- INSERT INTO NHAN_VIEN (MaNS, ViTri) VALUES ('GV001', 'GiamDocKhongHopLe');
 
 
 -- ============================================================================
 -- PHẦN 3: ĐẶC TẢ GIAO DỊCH AN TOÀN VÀ KIỂM SOÁT ĐỒNG THỜI (TRANSACTIONS)
--- Phục vụ: Cung cấp mẫu truy vấn chuẩn có Transaction & Pessimistic Locking
+-- Phục vụ: Cung cấp mẫu truy vấn chuẩn MySQL có Transaction & Pessimistic Locking
 --          để Khanh nhúng vào Backend Form Nhập Liệu (Tiêu chí 5, 8).
 -- ============================================================================
 
@@ -217,11 +220,11 @@ GROUP BY MaBKT, TenBKT;
 -- GIAO DỊCH 3.1: XÁC NHẬN ĐĂNG KÝ LỚP MỚI (CHỐNG VƯỢT SĨ SỐ - OVER-ENROLLMENT)
 -- Bài toán: Khi nhiều nhân viên tư vấn đồng thời ghi danh học viên vào lớp sắp đầy
 --           (Ví dụ LOP_GT_01 hiện chỉ còn đúng 1 chỗ).
--- Giải pháp: Dùng khóa hàng SELECT ... FOR UPDATE trên LOP_HOC để tuần tự hóa (Serialize).
+-- Giải pháp: Dùng khóa hàng SELECT ... FOR UPDATE trên LOP_HOC trong MySQL InnoDB.
 -- ----------------------------------------------------------------------------
 
--- Bước 1: Bắt đầu giao dịch
--- BEGIN TRANSACTION; (hoặc BEGIN; trên PostgreSQL)
+-- Bước 1: Bắt đầu giao dịch trên MySQL
+-- START TRANSACTION;
 
 -- Bước 2: Đọc thông tin lớp và KHÓA dòng lớp học để ngăn giao dịch khác sửa đổi/tính sĩ số
 -- SELECT MaLop, TenLop, SiSoToiDa, HocPhi, TrangThai
@@ -240,7 +243,7 @@ GROUP BY MaBKT, TenBKT;
 -- ELSE
 --     -- Bước 5: Chốt học phí từ LOP_HOC.HocPhi sang DANG_KY.KhoanPhaiThu
 --     INSERT INTO DANG_KY (MaDK, MaHV, MaLop, NgayDK, KhoanPhaiThu, HanNop, TrangThaiDK)
---     VALUES ('DK009', 'HV003', 'LOP_GT_01', CURRENT_DATE, 2000000.00, CURRENT_DATE + 7, 'DaXacNhan');
+--     VALUES ('DK009', 'HV003', 'LOP_GT_01', CURRENT_DATE, 2000000.00, DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY), 'DaXacNhan');
 --     COMMIT; -- Ghi nhận thành công, giải phóng khóa
 -- END IF;
 
@@ -252,8 +255,8 @@ GROUP BY MaBKT, TenBKT;
 -- Giải pháp: Dùng khóa hàng SELECT ... FOR UPDATE trên DANG_KY.
 -- ----------------------------------------------------------------------------
 
--- Bước 1: Bắt đầu giao dịch
--- BEGIN TRANSACTION;
+-- Bước 1: Bắt đầu giao dịch trên MySQL
+-- START TRANSACTION;
 
 -- Bước 2: Khóa dòng đăng ký cần thanh toán
 -- SELECT MaDK, KhoanPhaiThu, TrangThaiDK
@@ -293,7 +296,7 @@ GROUP BY MaBKT, TenBKT;
 -- Giải pháp: Để không vi phạm UQ_DANG_KY_HV_Lop, hệ thống cập nhật lại bản ghi cũ.
 -- ----------------------------------------------------------------------------
 
--- BEGIN TRANSACTION;
+-- START TRANSACTION;
 --
 -- SELECT MaLop, SiSoToiDa FROM LOP_HOC WHERE MaLop = 'LOP_IE_01' FOR UPDATE;
 --
@@ -301,9 +304,8 @@ GROUP BY MaBKT, TenBKT;
 -- SET 
 --     KhoanPhaiThu = (SELECT HocPhi FROM LOP_HOC WHERE MaLop = 'LOP_IE_01'),
 --     NgayDK = CURRENT_DATE,
---     HanNop = CURRENT_DATE + 7,
+--     HanNop = DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY),
 --     TrangThaiDK = 'DaXacNhan'
 -- WHERE MaDK = 'DK004' AND TrangThaiDK = 'DaHuy';
 --
 -- COMMIT;
-
