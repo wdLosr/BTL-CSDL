@@ -1,46 +1,34 @@
-# BTL-CSDL
-Hệ thống quản lý trung tâm tiếng Anh
+# Quản lý trung tâm tiếng Anh — bản giao diện
 
+Ứng dụng Spring Boot và Thymeleaf cho bài tập lớn Cơ sở dữ liệu. Mỗi form chỉ kiểm tra dữ liệu gửi lên và trả về trang cùng thông báo; ứng dụng không kết nối CSDL, không tạo dữ liệu mẫu và không lưu form ở máy chủ, file hoặc trình duyệt.
 
-Bài tập lớn môn Cơ sở dữ liệu của Nhóm 2 PTIT. Mục tiêu là phân tích, thiết kế và cài đặt CSDL, sau đó minh họa hai form nhập liệu, một màn hình tìm kiếm và hai báo cáo có thể xuất Excel.
+## Chạy ứng dụng
 
-**Trạng thái:** Đang khởi tạo. **Hệ quản trị CSDL, ngôn ngữ và framework:** Chưa chốt.
+Yêu cầu Java 17 trở lên. Dự án đã có Maven Wrapper, không cần thêm Maven vào PATH.
 
-## Phân công và đường dẫn
+Trong File Explorer, mở thư mục english-center-web và nhấp đúp vào file run.cmd để chạy. Không mở file rồi dán các dòng @echo off, cd, call hoặc if vào PowerShell. Nếu đang ở PowerShell trong thư mục này, chỉ gõ đúng MỘT dòng sau rồi nhấn Enter:
 
-| Thành viên | Trách nhiệm | Nơi bàn giao |
-| --- | --- | --- |
-| Lộc | Tìm kiếm, tích hợp và báo cáo cuối | app/tim-kiem/, sql/13_tim_kiem.sql, tests/search/, demo/kich_ban/, final-report/Bao_cao_BTL_Nhom_2.docx, README.md |
-| Nam | Phân tích yêu cầu và ERD | design/01_yeu_cau_du_lieu.docx, design/02_erd.drawio. Xuất design/02_erd.png sau khi chốt sơ đồ. |
-| Quang | Mô hình quan hệ, 3NF, CSDL và dữ liệu mẫu | design/03_data_diagram/, design/03_tu_dien_du_lieu.docx, design/04_kiem_tra_3NF.docx, sql/01_schema.sql, sql/02_seed.sql, sql/03_checks.sql, tests/database/ |
-| Khanh | Form đăng ký lớp và thu học phí | app/dang-ky/, app/thu-hoc-phi/, sql/11_dang_ky.sql, sql/12_thu_hoc_phi.sql, tests/forms/ |
-| Huy | Báo cáo thu học phí và kết quả lớp | app/bao-cao/, sql/14_bao_cao_thu.sql, sql/15_bao_cao_ket_qua.sql, reports/bao_cao_thu_hoc_phi/, reports/bao_cao_ket_qua_lop/, tests/reports/ |
+.\run.cmd
 
-Tài liệu thiết kế nằm trong `design/`, truy vấn và script trong `sql/`, mã ứng dụng trong `app/`, ca thử trong `tests/`, tệp báo cáo xuất trong `reports/`, kịch bản và minh chứng trong `demo/`, báo cáo BTL trong `final-report/`. Tệp `.gitkeep` giữ chỗ cho thư mục chưa có nội dung.
+Chỉ chạy tên file; không dán nội dung bên trong file. Dòng lệnh không có dấu nháy hoặc dấu backtick ở đầu hay cuối. File run.cmd chạy JAR đã biên dịch; nó không tự đóng gói lại khi ứng dụng đang mở. Khi hiện "Tomcat started on port 8080", mở http://localhost:8080/. Giữ cửa sổ đang chạy; nhấn Ctrl+C để dừng. Khi cần biên dịch lại sau khi sửa mã nguồn, dừng ứng dụng bằng Ctrl+C, chạy .\mvnw.cmd -q clean package rồi chạy lại .\run.cmd. Lệnh Maven có thể in cảnh báo tương thích Java; nếu không có dòng ERROR và file JAR được tạo thì có thể chạy.
+## Màn hình
 
-## Cách làm việc
+- Danh mục: Học viên, Khóa học, Lớp học, Cơ sở, Nhân sự, Giáo viên, Nhân viên, Đề thi, Bài kiểm tra.
+- Nghiệp vụ: Phiếu thanh toán, Đăng ký lớp, Phân công giảng dạy, Nhập kết quả làm bài.
+- Báo cáo: Thu học phí theo kỳ, Kết quả đánh giá theo lớp.
 
-1. Clone repository và tạo một nhánh cho nhiệm vụ. Ví dụ của Nam:
+Các trang bắt đầu với form trống. Lỗi định dạng như email có hai dấu @ được báo ngay khi nhập; trường bắt buộc để trống được báo khi rời ô. Nút **Lưu** trên form nhập liệu gửi dữ liệu đến Java để kiểm tra lại, giữ dữ liệu đã nhập và báo lỗi ngay dưới trường sai. Bản demo chưa lưu dữ liệu; khi kết nối CSDL, nút này sẽ lưu bản ghi để các thực thể khác liên kết. Hai trang báo cáo dùng nút **Xem báo cáo**. Các bảng báo cáo luôn rỗng trong bản demo. Nút **Xuất Excel** chỉ được bật khi giai đoạn sau có dữ liệu.
 
-   ~~~powershell
-   git clone https://github.com/wdLosr/BTL-CSDL.git
-   cd BTL-CSDL
-   git switch -c feature/nam-erd
-   ~~~
+## Đối chiếu EER và quyết định giao diện
 
-   Nhánh gợi ý cho các việc khác gồm `feature/quang-schema`, `feature/khanh-dang-ky`, `feature/loc-search` và `feature/huy-reports`.
+`EER.drawio` có các thực thể Học viên, Khóa học, Lớp học, Cơ sở, Nhân sự với ISA Giáo viên/Nhân viên, Đề thi, Bài kiểm tra và Phiếu thanh toán. Các quan hệ gốc gồm đăng ký học, lớp thuộc khóa học, lớp tại cơ sở, giảng dạy, làm bài và bài kiểm tra dùng đề thi. Form lớp dùng mã khóa và mã cơ sở để biểu diễn liên kết; form giáo viên và nhân viên dùng mã nhân sự kế thừa.
 
-2. Sửa tệp thuộc nhiệm vụ. Chạy `git status` và `git diff` để xem thay đổi. Ví dụ bàn giao ERD:
+`Mã đăng ký` trên phiếu thanh toán và kết quả làm bài, cùng `Khoản phải thu` và `Hạn nộp` trên form đăng ký, là các trường bổ sung để nối được luồng đăng ký, thu học phí và báo cáo. Phiếu thanh toán và kết quả làm bài được liên kết về đăng ký trong bản giao diện. Không có trang Học phí riêng. `Thang điểm áp dụng` là ô hỗ trợ kiểm tra điểm ở bản demo; sau khi có CSDL sẽ lấy thang điểm từ Bài kiểm tra. Thời lượng Khóa học được thêm theo yêu cầu giao diện; file EER gốc có giá khóa học nhưng chưa có trường thời lượng của khóa.
 
-   ~~~powershell
-   git add -- design/02_erd.drawio
-   git commit -m "Add ERD for English center"
-   git push -u origin feature/nam-erd
-   ~~~
+Danh sách lựa chọn tối thiểu vì EER chưa định nghĩa tập giá trị: trạng thái lớp `Dự kiến / Đang học / Kết thúc`; trạng thái đăng ký `Chờ xác nhận / Đang học / Đã hủy`; loại đề và bài kiểm tra `Đầu vào / Giữa khóa / Cuối khóa`; phương thức thanh toán `Tiền mặt / Chuyển khoản`; trạng thái phiếu `Thành công / Thất bại / Đã hủy`; vai trò giảng dạy `Chính / Trợ giảng`.
 
-3. Trên GitHub, mở Pull Request từ nhánh nhiệm vụ vào `main`. Ghi mã công việc, tệp bàn giao, cách kiểm tra và kết quả thử. Lộc hoặc người được giao sẽ rà soát. Nếu cần sửa, commit và push tiếp vào cùng nhánh.
-4. Merge sau khi nghiệm thu. Mọi thay đổi trong quá trình làm bài đi qua Pull Request. Tránh sửa trực tiếp `main`.
+## Kiểm tra hiện có và giai đoạn CSDL
 
-## Mốc bàn giao
+Máy chủ kiểm tra trường bắt buộc sau khi cắt khoảng trắng; ký tự mã; email; số điện thoại dạng chuỗi bắt đầu bằng `0`, dài 10–11 chữ số; ngày sinh, ngày giờ thanh toán; số nguyên dương; số tiền; hạn nộp so với ngày đăng ký; khoảng ngày báo cáo; điểm không âm và điểm không vượt thang khi có ô thang điểm. Điểm `0` và điểm chưa nhập đều hợp lệ.
 
-Nam giao ERD đã duyệt cho Quang. Quang giao schema và dữ liệu mẫu cho Lộc, Khanh, Huy để nối và kiểm thử các chức năng. Khanh cung cấp mã đăng ký và mã biên nhận demo để Lộc và Huy đối chiếu. Lộc tổng hợp báo cáo và minh chứng. Dùng dữ liệu mẫu không chứa thông tin cá nhân thật. Giữ thông tin kết nối có bí mật trong cấu hình cục bộ.
+Khi kết nối CSDL cần kiểm tra sự tồn tại của các mã liên kết, trùng đăng ký, sĩ số lớp, phân công hợp lệ, biên nhận trùng, thu vượt khoản phải thu, điểm trong thang điểm lưu thực tế và các điều kiện phụ thuộc trạng thái. Hai báo cáo khi đó mới tổng hợp dữ liệu thực và bật xuất Excel.
