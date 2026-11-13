@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title th:text="${page.title}"></title><link rel="stylesheet" th:href="@{/css/style.css}"></head>
+<body><main class="wrap narrow">
+<a class="back" th:href="@{/}">Về trang chủ</a><h1 th:text="${page.title}"></h1>
+<p class="notice success" th:if="${savedId != null}" th:text="'Đã lưu vào MySQL. Mã: ' + ${savedId}"></p>
+<p class="notice error" th:if="${dbError}" th:text="${dbError}"></p>
+<div class="notice" th:if="${savedReceipt != null}"><strong>Phiếu thu đã lưu</strong><p th:text="'Mã phiếu: ' + ${savedReceipt['MaPhieu']} + ' · Học viên: ' + ${savedReceipt['HoTen']}"></p><p th:text="'Lớp: ' + ${savedReceipt['TenLop']} + ' · Số tiền: ' + ${#numbers.formatDecimal(savedReceipt['SoTien'],1,'COMMA',2,'POINT')}"></p></div>
+<form data-live-validation method="post" th:action="@{/m/{slug}(slug=${page.slug})}" novalidate>
+  <div class="field" th:each="field : ${page.fields}">
+    <label th:for="${field.key}" th:text="${field.label} + (${field.required} ? ' *' : '')"></label>
+    <select th:if="${field.type == 'select' or field.type == 'lookup'}" th:id="${field.key}" th:name="${field.key}" th:attr="data-kind=${field.type},data-label=${field.label}" th:required="${field.required}">
+      <option value="">-- Chọn --</option><option th:each="option : ${field.options}" th:value="${option.value}" th:text="${option.label}" th:selected="${values[field.key] == option.value}"></option>
+    </select>
+    <input th:unless="${field.type == 'select' or field.type == 'lookup'}" th:id="${field.key}" th:name="${field.key}" th:attr="data-kind=${field.type},data-label=${field.label}" th:type="${field.type == 'date' ? 'date' : field.type == 'datetime-local' ? 'datetime-local' : field.type == 'email' ? 'email' : field.type == 'tel' ? 'tel' : (field.type == 'positiveInt' or field.type == 'positiveDecimal' or field.type == 'nonnegativeDecimal' or field.type == 'moneyNonnegative') ? 'number' : 'text'}" th:step="${field.type == 'positiveInt' ? '1' : (field.type == 'positiveDecimal' or field.type == 'nonnegativeDecimal' or field.type == 'moneyNonnegative') ? '0.01' : null}" th:min="${field.type == 'positiveInt' ? '1' : (field.type == 'positiveDecimal' or field.type == 'nonnegativeDecimal' or field.type == 'moneyNonnegative') ? '0' : null}" th:value="${values[field.key]}" th:required="${field.required}">
+    <small class="error" aria-live="polite" th:text="${errors[field.key]}"></small>
+  </div>
+  <div class="notice" id="linked-preview" th:if="${page.slug == 'dang-ky-lop' or page.slug == 'phieu-thanh-toan'}" aria-live="polite">Chọn lớp hoặc đăng ký để xem thông tin từ MySQL.</div>
+  <p class="hint" th:if="${page.slug == 'phieu-thanh-toan'}">Trạng thái phiếu mới: Thành công. Phiếu đã hủy chỉ có trong dữ liệu lịch sử và không được cộng vào tiền đã thu.</p>
+  <button type="submit">Lưu</button>
+</form>
+<p class="hint" th:if="${page.slug == 'dang-ky-lop'}">Đăng ký mới chốt học phí từ lớp trên máy chủ. Nếu xác nhận lại hồ sơ đã hủy, hệ thống dùng mã đăng ký cũ và giữ lịch sử thanh toán.</p>
+</main><script defer th:src="@{/js/live-validation.js}"></script><script defer th:src="@{/js/preview.js}"></script></body></html>

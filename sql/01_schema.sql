@@ -12,7 +12,6 @@
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Tạo cơ sở dữ liệu nếu chưa tồn tại và kích hoạt sử dụng
 CREATE DATABASE IF NOT EXISTS english_center_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -267,10 +266,10 @@ SELECT
     l.SiSoToiDa,
     l.HocPhi,
     l.TrangThai AS TrangThaiLop,
-    COUNT(CASE WHEN dk.TrangThaiDK = 'DaXacNhan' THEN 1 END) AS SiSoHienTai,
-    (l.SiSoToiDa - COUNT(CASE WHEN dk.TrangThaiDK = 'DaXacNhan' THEN 1 END)) AS SoChoConLai,
+    COUNT(CASE WHEN dk.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh') THEN 1 END) AS SiSoHienTai,
+    (l.SiSoToiDa - COUNT(CASE WHEN dk.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh') THEN 1 END)) AS SoChoConLai,
     CASE 
-        WHEN (l.SiSoToiDa - COUNT(CASE WHEN dk.TrangThaiDK = 'DaXacNhan' THEN 1 END)) <= 0 THEN 'DaDay'
+        WHEN (l.SiSoToiDa - COUNT(CASE WHEN dk.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh') THEN 1 END)) <= 0 THEN 'DaDay'
         WHEN l.TrangThai != 'DangNhanDangKy' THEN 'NgungNhan'
         ELSE 'ConCho'
     END AS TinhTrangDangKy
@@ -359,10 +358,137 @@ FROM BAI_KIEM_TRA bkt
 JOIN LOP_HOC lh ON bkt.MaLop = lh.MaLop
 JOIN DANG_KY dk ON lh.MaLop = dk.MaLop AND dk.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')
 JOIN HOC_VIEN hv ON dk.MaHV = hv.MaHV
-LEFT JOIN LAM_BAI lb ON bkt.MaBKT = lb.MaBKT AND hv.MaHV = lb.MaHV;
+LEFT JOIN LAM_BAI lb ON bkt.MaBKT = lb.MaBKT AND hv.MaHV = lb.MaHV
+    AND lb.LanThi = (SELECT MAX(x.LanThi) FROM LAM_BAI x
+                     WHERE x.MaBKT = bkt.MaBKT AND x.MaHV = hv.MaHV);
+
+-- ---------------------------------------------------------------------------
+-- 5. RÀNG BUỘC LIÊN BẢNG: bảo vệ cả khi ghi SQL trực tiếp, không qua procedure
+-- ---------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE TRIGGER trg_lam_bai_bi BEFORE INSERT ON LAM_BAI FOR EACH ROW
+BEGIN
+    DECLARE v_thang_diem DECIMAL(4,2);
+    SELECT ThangDiem INTO v_thang_diem FROM BAI_KIEM_TRA WHERE MaBKT = NEW.MaBKT;
+    IF v_thang_diem IS NOT NULL THEN
+        IF NEW.Diem IS NOT NULL AND NEW.Diem > v_thang_diem THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Điểm vượt thang điểm bài kiểm tra';
+        END IF;
+        IF NOT EXISTS (
+            SELECT 1 FROM BAI_KIEM_TRA b JOIN DANG_KY d ON d.MaLop = b.MaLop
+             WHERE b.MaBKT = NEW.MaBKT AND d.MaHV = NEW.MaHV
+               AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')
+        ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Học viên không có đăng ký hợp lệ ở lớp của bài kiểm tra';
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_lam_bai_bu BEFORE UPDATE ON LAM_BAI FOR EACH ROW
+BEGIN
+    DECLARE v_thang_diem DECIMAL(4,2);
+    SELECT ThangDiem INTO v_thang_diem FROM BAI_KIEM_TRA WHERE MaBKT = NEW.MaBKT;
+    IF v_thang_diem IS NOT NULL THEN
+        IF NEW.Diem IS NOT NULL AND NEW.Diem > v_thang_diem THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Điểm vượt thang điểm bài kiểm tra';
+        END IF;
+        IF NOT EXISTS (
+            SELECT 1 FROM BAI_KIEM_TRA b JOIN DANG_KY d ON d.MaLop = b.MaLop
+             WHERE b.MaBKT = NEW.MaBKT AND d.MaHV = NEW.MaHV
+               AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh')
+        ) THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Học viên không có đăng ký hợp lệ ở lớp của bài kiểm tra';
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_bai_kiem_tra_bu BEFORE UPDATE ON BAI_KIEM_TRA FOR EACH ROW
+BEGIN
+    IF NEW.MaLop <> OLD.MaLop AND EXISTS (SELECT 1 FROM LAM_BAI WHERE MaBKT = OLD.MaBKT) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không chuyển bài kiểm tra đã có kết quả sang lớp khác';
+    END IF;
+    IF EXISTS (SELECT 1 FROM LAM_BAI WHERE MaBKT = OLD.MaBKT AND Diem > NEW.ThangDiem) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Thang điểm mới thấp hơn điểm đã nhập';
+    END IF;
+END$$
+
+CREATE TRIGGER trg_phieu_bi BEFORE INSERT ON PHIEU_THANH_TOAN FOR EACH ROW
+BEGIN
+    DECLARE v_phai_thu DECIMAL(12,2);
+    DECLARE v_trang_thai VARCHAR(20);
+    DECLARE v_da_thu DECIMAL(14,2);
+    IF NEW.TrangThai = 'ThanhCong' THEN
+        SELECT KhoanPhaiThu, TrangThaiDK INTO v_phai_thu, v_trang_thai
+          FROM DANG_KY WHERE MaDK = NEW.MaDK FOR UPDATE;
+        IF v_phai_thu IS NOT NULL THEN
+            IF v_trang_thai NOT IN ('DaXacNhan', 'DaHoanThanh') THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Đăng ký không đủ điều kiện thu';
+            END IF;
+            SELECT COALESCE(SUM(SoTien), 0) INTO v_da_thu FROM PHIEU_THANH_TOAN
+             WHERE MaDK = NEW.MaDK AND TrangThai = 'ThanhCong';
+            IF v_da_thu + NEW.SoTien > v_phai_thu THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Số tiền vượt số dư còn phải thu';
+            END IF;
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_phieu_bu BEFORE UPDATE ON PHIEU_THANH_TOAN FOR EACH ROW
+BEGIN
+    DECLARE v_phai_thu DECIMAL(12,2);
+    DECLARE v_trang_thai VARCHAR(20);
+    DECLARE v_da_thu DECIMAL(14,2);
+    IF NEW.MaDK <> OLD.MaDK THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Không chuyển phiếu thu sang đăng ký khác';
+    END IF;
+    IF NEW.TrangThai = 'ThanhCong' THEN
+        SELECT KhoanPhaiThu, TrangThaiDK INTO v_phai_thu, v_trang_thai
+          FROM DANG_KY WHERE MaDK = NEW.MaDK FOR UPDATE;
+        IF v_trang_thai NOT IN ('DaXacNhan', 'DaHoanThanh') THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Đăng ký không đủ điều kiện thu';
+        END IF;
+        SELECT COALESCE(SUM(SoTien), 0) INTO v_da_thu FROM PHIEU_THANH_TOAN
+         WHERE MaDK = NEW.MaDK AND MaPhieu <> OLD.MaPhieu AND TrangThai = 'ThanhCong';
+        IF v_da_thu + NEW.SoTien > v_phai_thu THEN
+            SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Số tiền vượt số dư còn phải thu';
+        END IF;
+    END IF;
+END$$
+
+CREATE TRIGGER trg_phieu_ai AFTER INSERT ON PHIEU_THANH_TOAN FOR EACH ROW
+BEGIN
+    IF NEW.TrangThai = 'ThanhCong' THEN
+        UPDATE DANG_KY d SET TrangThaiDK = 'DaHoanThanh'
+         WHERE d.MaDK = NEW.MaDK AND d.TrangThaiDK = 'DaXacNhan'
+           AND d.KhoanPhaiThu = (SELECT SUM(p.SoTien) FROM PHIEU_THANH_TOAN p
+                                WHERE p.MaDK = NEW.MaDK AND p.TrangThai = 'ThanhCong');
+    END IF;
+END$$
+
+CREATE TRIGGER trg_phieu_au AFTER UPDATE ON PHIEU_THANH_TOAN FOR EACH ROW
+BEGIN
+    UPDATE DANG_KY d
+       SET TrangThaiDK = CASE WHEN d.KhoanPhaiThu <=
+             (SELECT COALESCE(SUM(p.SoTien), 0) FROM PHIEU_THANH_TOAN p
+               WHERE p.MaDK = OLD.MaDK AND p.TrangThai = 'ThanhCong')
+             THEN 'DaHoanThanh' ELSE 'DaXacNhan' END
+     WHERE d.MaDK = OLD.MaDK AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh');
+END$$
+
+CREATE TRIGGER trg_phieu_ad AFTER DELETE ON PHIEU_THANH_TOAN FOR EACH ROW
+BEGIN
+    UPDATE DANG_KY d
+       SET TrangThaiDK = CASE WHEN d.KhoanPhaiThu <=
+             (SELECT COALESCE(SUM(p.SoTien), 0) FROM PHIEU_THANH_TOAN p
+               WHERE p.MaDK = OLD.MaDK AND p.TrangThai = 'ThanhCong')
+             THEN 'DaHoanThanh' ELSE 'DaXacNhan' END
+     WHERE d.MaDK = OLD.MaDK AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh');
+END$$
+
+DELIMITER ;
 
 -- ----------------------------------------------------------------------------
--- 5. KHÔI PHỤC CẤU HÌNH HỆ THỐNG MYSQL
+-- 6. KHÔI PHỤC CẤU HÌNH HỆ THỐNG MYSQL
 -- ----------------------------------------------------------------------------
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
