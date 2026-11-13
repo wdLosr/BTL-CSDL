@@ -4,7 +4,7 @@ Hệ thống quản lý trung tâm tiếng Anh
 
 Bài tập lớn môn Cơ sở dữ liệu của Nhóm 2 PTIT. Mục tiêu là phân tích, thiết kế và cài đặt CSDL, sau đó minh họa hai form nhập liệu, một màn hình tìm kiếm và hai báo cáo có thể xuất Excel.
 
-**Công nghệ:** Java 17+, Spring Boot MVC, Thymeleaf, Spring JDBC, MySQL 8.0 và Apache POI.
+**Công nghệ** Java 17+, Spring Boot MVC, Thymeleaf, Spring JDBC, MySQL 8.0 và Apache POI.
 
 ## Phân công và đường dẫn
 
@@ -12,11 +12,11 @@ Bài tập lớn môn Cơ sở dữ liệu của Nhóm 2 PTIT. Mục tiêu là p
 | --- | --- | --- |
 | Lộc | Tìm kiếm, tích hợp và báo cáo cuối | SearchController.java, search.html, sql/13_tim_kiem.sql, demo/kich_ban/, final-report/Bao_cao_BTL_Nhom_2.docx, README.md |
 | Nam | Phân tích yêu cầu và ERD | design/01_yeu_cau_du_lieu.docx, design/02_erd.drawio. Xuất design/02_erd.png sau khi chốt sơ đồ. |
-| Quang | Mô hình quan hệ, 3NF, CSDL và dữ liệu mẫu | design/03_data_diagram/, design/03_tu_dien_du_lieu.docx, design/04_kiem_tra_3NF.docx, sql/01_schema.sql, sql/02_seed.sql, sql/03_checks.sql, tests/database/ |
-| Khanh | Form đăng ký lớp và thu học phí | app/dang-ky/, app/thu-hoc-phi/, sql/11_dang_ky.sql, sql/12_thu_hoc_phi.sql, tests/forms/ |
-| Huy | Báo cáo thu học phí và kết quả lớp | app/bao-cao/, sql/14_bao_cao_thu.sql, sql/15_bao_cao_ket_qua.sql, reports/bao_cao_thu_hoc_phi/, reports/bao_cao_ket_qua_lop/, tests/reports/ |
+| Quang | Mô hình quan hệ, 3NF, CSDL và dữ liệu mẫu | design/03_data_diagram/, design/03_tu_dien_du_lieu.docx, design/04_kiem_tra_3NF.docx, sql/01_schema.sql, sql/02_seed.sql, sql/03_checks.sql |
+| Khanh | Form đăng ký lớp và thu học phí | FormController.java, CenterService.java, form.html, sql/11_dang_ky.sql, sql/12_thu_hoc_phi.sql |
+| Huy | Báo cáo thu học phí và kết quả lớp | ReportController.java, ReportService.java, ExcelService.java, report.html, sql/14_bao_cao_thu.sql, sql/15_bao_cao_ket_qua.sql, reports/ |
 
-Tài liệu thiết kế nằm trong `design/`, truy vấn và script trong `sql/`, mã ứng dụng trong `src/`, ca thử trong `tests/`, tệp báo cáo xuất trong `reports/`, kịch bản và minh chứng trong `demo/`, báo cáo BTL trong `final-report/`. Tệp `.gitkeep` giữ chỗ cho thư mục chưa có nội dung.
+Tài liệu thiết kế nằm trong `design/`, truy vấn và script trong `sql/`, mã ứng dụng trong `src/`, kiểm thử Maven trong `src/test/`, tệp báo cáo xuất trong `reports/`, kịch bản và minh chứng trong `demo/`, báo cáo BTL trong `final-report/`.
 
 ## Cách làm việc
 
@@ -48,7 +48,7 @@ Nam giao ERD đã duyệt cho Quang. Quang giao schema và dữ liệu mẫu cho
 ## Chạy ứng dụng và demo
 
 Ứng dụng tích hợp dùng Java 17 trở lên, Spring Boot và MySQL 8.0.16 trở lên.
-Mã nguồn Maven ở thư mục `src/`. Các thư mục `app/` là đường dẫn bàn giao trong bản phân công.
+Mã nguồn Maven ở thư mục `src/`. Bộ Maven Wrapper tải Maven và các thư viện ở lần chạy đầu, nên máy cần truy cập kho tải khi chưa có bộ nhớ đệm.
 Hai form dùng `FormController`, `CenterService` và `CenterRepository`.
 Hai báo cáo dùng `ReportService`, `ReportController` và `ExcelService`.
 Các script SQL 11, 12, 14 và 15 là thủ tục tương ứng để đối chiếu.
@@ -71,3 +71,5 @@ $env:DB_PASSWORD = [System.Net.NetworkCredential]::new('', $password).Password
 Mở [trang demo](http://localhost:8080/) để xác nhận đăng ký, ghi phiếu thu, xem báo cáo theo kỳ và xem kết quả theo lớp. Hai báo cáo cho tải Excel khi có dữ liệu. Chạy `.\mvnw.cmd test` để kiểm tra logic báo cáo và tệp xuất.
 
 [Kịch bản demo đầy đủ](demo/kich_ban/README.md) và [biên bản kiểm thử tích hợp](demo/minh_chung/kiem_thu_tich_hop.md).
+
+[Kết quả kiểm tra cuối](demo/minh_chung/final_audit.md).
