@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Tìm kiếm đăng ký học viên</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<main class="wrap">
+  <a class="back" th:href="@{/}">Về trang chủ</a>
+  <h1>Tìm kiếm đăng ký học viên</h1>
+  <form class="filters" method="get" th:action="@{/tim-kiem}">
+    <div class="field">
+      <label for="tuKhoa">Mã hoặc tên học viên</label>
+      <input id="tuKhoa" name="tuKhoa" th:value="${tuKhoa}">
+    </div>
+    <div class="field">
+      <label for="maLop">Lớp học</label>
+      <select id="maLop" name="maLop">
+        <option value="">Tất cả lớp</option>
+        <option th:each="item : ${classes}" th:value="${item.value}"
+                th:text="${item.label}" th:selected="${maLop == item.value}"></option>
+      </select>
+    </div>
+    <button type="submit">Tìm kiếm</button>
+  </form>
+  <p class="notice error" th:if="${dbError}" th:text="${dbError}"></p>
+  <p class="notice" th:if="${rows != null and rows.isEmpty()}">Không tìm thấy đăng ký phù hợp.</p>
+  <div class="table-scroll" th:if="${rows != null and !rows.isEmpty()}">
+    <table>
+      <thead><tr><th>Mã học viên</th><th>Họ tên</th><th>Lớp</th><th>Trạng thái đăng ký</th>
+        <th>Phải thu (đ)</th><th>Đã thu (đ)</th><th>Còn phải thu (đ)</th></tr></thead>
+      <tbody>
+      <tr th:each="r : ${rows}" th:attr="data-ma-dk=${r['MaDK']}">
+        <td th:text="${r['MaHV']}"></td>
+        <td th:text="${r['HoTen']}"></td>
+        <td th:text="${r['TenLop']}"></td>
+        <td th:switch="${r['TrangThaiDK']}">
+          <span th:case="'DaXacNhan'">Đã xác nhận</span>
+          <span th:case="'DaHoanThanh'">Đã hoàn thành</span>
+          <span th:case="'DaHuy'">Đã hủy</span>
+        </td>
+        <td th:text="${#numbers.formatDecimal(r['KhoanPhaiThu'], 1, 'POINT', 2, 'COMMA')}"></td>
+        <td th:text="${#numbers.formatDecimal(r['DaThu'], 1, 'POINT', 2, 'COMMA')}"></td>
+        <td th:text="${r['SoDu'] == null ? 'Không áp dụng' : #numbers.formatDecimal(r['SoDu'], 1, 'POINT', 2, 'COMMA')}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+</body>
+</html>
