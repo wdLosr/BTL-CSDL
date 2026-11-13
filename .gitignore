@@ -21,3 +21,6 @@ Desktop.ini
 /dist/
 /tmp/
 /.cache/
+
+# Ket qua build Maven
+/target/

@@ -44,3 +44,28 @@ Tài liệu thiết kế nằm trong `design/`, truy vấn và script trong `sql
 ## Mốc bàn giao
 
 Nam giao ERD đã duyệt cho Quang. Quang giao schema và dữ liệu mẫu cho Lộc, Khanh, Huy để nối và kiểm thử các chức năng. Khanh cung cấp mã đăng ký và mã biên nhận demo để Lộc và Huy đối chiếu. Lộc tổng hợp báo cáo và minh chứng. Dùng dữ liệu mẫu không chứa thông tin cá nhân thật. Giữ thông tin kết nối có bí mật trong cấu hình cục bộ.
+
+## Chạy demo hai form và hai báo cáo
+
+Ứng dụng tích hợp dùng Java 17 trở lên, Spring Boot và MySQL 8.0.16 trở lên.
+Mã nguồn Maven ở thư mục `src/`. Các thư mục `app/` là đường dẫn bàn giao trong bản phân công.
+Hai form dùng `FormController`, `CenterService` và `CenterRepository`.
+Hai báo cáo dùng `ReportService`, `ReportController` và `ExcelService`.
+Các script SQL 11, 12, 14 và 15 là thủ tục tương ứng để đối chiếu.
+Ứng dụng dùng Spring JDBC và không tự chạy các script này.
+
+Trên MySQL dành riêng cho demo, chạy `sql/01_schema.sql` rồi `sql/02_seed.sql`.
+Hai script đặt lại bảng và dữ liệu trong `english_center_db`. Nếu đã có dữ liệu cần giữ, dùng bản sao script với tên database demo riêng và cấu hình URL tương ứng.
+
+Trong PowerShell ở gốc repository:
+
+~~~powershell
+$env:DB_URL = 'jdbc:mysql://127.0.0.1:3306/english_center_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Bangkok'
+$env:DB_USERNAME = Read-Host 'Tai khoan MySQL'
+$password = Read-Host 'Mat khau MySQL' -AsSecureString
+$env:DB_PASSWORD = [System.Net.NetworkCredential]::new('', $password).Password
+.\mvnw.cmd clean package
+.\run.cmd
+~~~
+
+Mở [trang demo](http://localhost:8080/) để xác nhận đăng ký, ghi phiếu thu, xem báo cáo theo kỳ và xem kết quả theo lớp. Hai báo cáo cho tải Excel khi có dữ liệu. Chạy `.\mvnw.cmd test` để kiểm tra logic báo cáo và tệp xuất.
