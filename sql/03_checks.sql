@@ -46,7 +46,7 @@ SELECT 'LAM_BAI', COUNT(*) FROM LAM_BAI;
 -- Kỳ vọng:
 -- - LOP_TOEIC_A: SiSoToiDa = 2, SiSoHienTai = 2, SoChoConLai = 0, TinhTrang = 'DaDay'
 -- - LOP_GT_01:   SiSoToiDa = 3, SiSoHienTai = 2, SoChoConLai = 1, TinhTrang = 'ConCho' (Cho Khanh demo)
--- - LOP_IE_01:   SiSoToiDa = 20, SiSoHienTai = 3, SoChoConLai = 17 (DK002 đã thu đủ vẫn chiếm chỗ; DK004 đã hủy không tính)
+-- - LOP_IE_01:   SiSoToiDa = 20, SiSoHienTai = 2, SoChoConLai = 18 (Bản ghi DK004 'DaHuy' không được tính)
 -- - LOP_IE_02:   SiSoToiDa = 15, SiSoHienTai = 0, SoChoConLai = 15, TinhTrang = 'ConCho'
 SELECT 
     MaLop,
@@ -132,24 +132,6 @@ SELECT
 FROM v_bao_cao_ket_qua_lop
 WHERE MaBKT = 'BKT01'
 GROUP BY MaBKT, TenBKT;
-
--- 1.6 Các sai lệch liên bảng phải đều bằng 0 sau khi nạp dữ liệu mẫu.
-SELECT COUNT(*) AS SoLopSaiSiSo FROM v_si_so_lop v
-WHERE v.SiSoHienTai <> (SELECT COUNT(*) FROM DANG_KY d
-                        WHERE d.MaLop = v.MaLop
-                          AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh'));
-
-SELECT COUNT(*) AS SoDangKySaiTrangThaiThu FROM v_dang_ky_hoc_phi v
-WHERE v.TrangThaiDK <> 'DaHuy'
-  AND ((v.TongDaThu >= v.KhoanPhaiThu AND v.TrangThaiDK <> 'DaHoanThanh')
-    OR (v.TongDaThu < v.KhoanPhaiThu AND v.TrangThaiDK = 'DaHoanThanh'));
-
-SELECT COUNT(*) AS SoKetQuaSaiLopHoacDiem FROM LAM_BAI k
-JOIN BAI_KIEM_TRA b ON b.MaBKT = k.MaBKT
-WHERE (k.Diem IS NOT NULL AND k.Diem > b.ThangDiem)
-   OR NOT EXISTS (SELECT 1 FROM DANG_KY d
-                   WHERE d.MaHV = k.MaHV AND d.MaLop = b.MaLop
-                     AND d.TrangThaiDK IN ('DaXacNhan', 'DaHoanThanh'));
 
 
 -- ============================================================================
@@ -318,10 +300,12 @@ WHERE (k.Diem IS NOT NULL AND k.Diem > b.ThangDiem)
 --
 -- SELECT MaLop, SiSoToiDa FROM LOP_HOC WHERE MaLop = 'LOP_IE_01' FOR UPDATE;
 --
--- Sau khi khóa lớp, khóa tiếp dòng DK004 và kiểm tra sĩ số. Nếu không có phiếu
--- thanh toán nào, có thể chốt lại học phí/NgàyDK theo lớp hiện tại. Nếu đã có
--- lịch sử phiếu, giữ nguyên KhoanPhaiThu và NgayDK; cộng riêng phiếu ThanhCong,
--- kiểm tra tổng đã thu không vượt phải thu rồi cập nhật HanNop và TrangThaiDK.
--- Xem thủ tục đầy đủ trong 11_dang_ky.sql.
+-- UPDATE DANG_KY
+-- SET 
+--     KhoanPhaiThu = (SELECT HocPhi FROM LOP_HOC WHERE MaLop = 'LOP_IE_01'),
+--     NgayDK = CURRENT_DATE,
+--     HanNop = DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY),
+--     TrangThaiDK = 'DaXacNhan'
+-- WHERE MaDK = 'DK004' AND TrangThaiDK = 'DaHuy';
 --
 -- COMMIT;

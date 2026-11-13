@@ -21,9 +21,3 @@ Desktop.ini
 /dist/
 /tmp/
 /.cache/
-
-/target/
-/.idea/
-*.iml
-/BTL-CSDL/
-.env
