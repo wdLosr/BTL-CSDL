@@ -9,7 +9,7 @@ Toàn bộ mã nguồn DDL, dữ liệu mẫu chuẩn hóa và các kịch bản
 
 ```text
 sql/
-├── 01_schema.sql           # DDL khởi tạo 13 bảng (InnoDB), PK, FK, UNIQUE, CHECK, Index, 4 View và trigger kiểm tra liên bảng
+├── 01_schema.sql           # DDL khởi tạo 13 bảng (InnoDB), PK, FK, UNIQUE, CHECK, Index, 4 View dùng chung
 ├── 02_seed.sql             # Dữ liệu mẫu chuẩn hóa bao phủ toàn bộ các ca kiểm thử T01–T10
 ├── 03_checks.sql           # Kịch bản kiểm thử toàn vẹn, xác minh 4 View, negative tests & transaction locking
 ├── 11_dang_ky.sql          # Module nghiệp vụ: Xác nhận đăng ký lớp (Khanh phụ trách)
@@ -24,11 +24,11 @@ sql/
 
 ## 2. Thông số kỹ thuật MySQL / MariaDB đã thiết lập
 
-1. **Hệ quản trị CSDL:** Dùng MySQL 8.0.16 trở lên để các ràng buộc `CHECK` được thực thi. Năm thủ tục 11–15 đã được chạy thử trên MySQL 8.0.46; chưa kiểm thử với MariaDB/XAMPP.
-2. **Database:** `english_center_db` (Tự động tạo mới và chuyển đổi bằng `CREATE DATABASE IF NOT EXISTS ...; USE english_center_db;`). Database tên `english_center` là database khác và không được năm file 11–15 sử dụng.
+1. **Hệ quản trị CSDL:** MariaDB $\ge$ 10.4 hoặc MySQL $\ge$ 8.0 (Tương thích hoàn hảo với gói cài đặt **XAMPP**).
+2. **Database:** `english_center_db` (Tự động tạo mới và chuyển đổi bằng `CREATE DATABASE IF NOT EXISTS ...; USE english_center_db;`).
 3. **Storage Engine:** `ENGINE=InnoDB` cho toàn bộ 13 bảng để đảm bảo tính toàn vẹn tham chiếu (Foreign Keys) và hỗ trợ giao dịch ACID.
 4. **Bảng mã và đối chiếu:** `CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci` hỗ trợ lưu trữ tiếng Việt có dấu đầy đủ và không bị lỗi font.
-5. **Khóa ngoại:** `01_schema.sql` tạm tắt kiểm tra khi xóa/tạo lại bảng. `02_seed.sql` giữ kiểm tra khóa ngoại bật; dữ liệu được xóa và nạp theo đúng thứ tự phụ thuộc.
+5. **Cơ chế chống nghẽn khóa ngoại:** Thiết lập `FOREIGN_KEY_CHECKS = 0;` khi drop bảng/reset dữ liệu và khôi phục `FOREIGN_KEY_CHECKS = 1;` khi hoàn thành.
 6. **Kiểm tra ràng buộc miền giá trị:** Thực thi `CHECK constraints` trực tiếp trên tầng lưu trữ MySQL.
 
 ---
@@ -89,7 +89,6 @@ Chạy trực tiếp từ terminal dự án:
 
 ## 5. Cách Reset dữ liệu về trạng thái ban đầu khi Demo
 Khi các thành viên trong nhóm nhập thử dữ liệu làm biến đổi sĩ số hoặc công nợ, chỉ cần chạy lại duy nhất file `02_seed.sql`:
-File này tự tạm tắt `SQL_SAFE_UPDATES` trong lúc xóa dữ liệu mẫu rồi khôi phục giá trị cũ, nên chạy được cả khi MySQL Workbench bật Safe Updates. Chạy toàn bộ file trong một phiên kết nối; việc chạy lại sẽ xóa dữ liệu đang có trong `english_center_db`.
 - **Trong phpMyAdmin:** Mở database `english_center_db` $\to$ Tab **Import** $\to$ Chọn `02_seed.sql` $\to$ Bấm **Go**.
 - **Trong Terminal:**
   ```powershell
@@ -103,7 +102,7 @@ Toàn bộ CSDL sẽ trở lại trạng thái ban đầu trong vòng dưới 1 
 
 | Mã Test | Nghiệp vụ kiểm thử | Dữ liệu mẫu tương ứng trong MySQL | Kết quả đối chiếu chuẩn | Thành viên phụ trách |
 | :--- | :--- | :--- | :--- | :--- |
-| **T01** | Đăng ký lớp còn đúng 1 chỗ | Lớp `LOP_GT_01` (Sĩ số tối đa 3, hiện đã có 2 học viên: `DK007`, `DK008`) | Đăng ký thành công, sĩ số lên 3/3; view `v_si_so_lop` tính `DaDay`. Không ghi `DaDay` vào `LOP_HOC.TrangThai`. | **Khanh** (Form Đăng ký) |
+| **T01** | Đăng ký lớp còn đúng 1 chỗ | Lớp `LOP_GT_01` (Sĩ số tối đa 3, hiện đã có 2 học viên: `DK007`, `DK008`) | Đăng ký thành công, sĩ số lên 3/3, trạng thái lớp chuyển sang `DaDay`. | **Khanh** (Form Đăng ký) |
 | **T02** | Chặn đăng ký vào lớp đã đầy | Lớp `LOP_TOEIC_A` (Sĩ số tối đa 2, đã có 2 học viên: `DK005`, `DK006`) | Bị chặn, thông báo lỗi: "Lớp học đã đủ sĩ số". Không phát sinh bản ghi. | **Khanh** (Form Đăng ký) |
 | **T03** | Tái kích hoạt đăng ký đã hủy | Đăng ký `DK004` (HV004 tại lớp `LOP_IE_01` có trạng thái `DaHuy`) | Cập nhật lại bản ghi `DK004` sang `DaXacNhan`, không thêm mã mới trùng lặp. | **Khanh** (Form Đăng ký) |
 | **T04** | Thu học phí nhiều lần (nợ còn lại) | Đăng ký `DK001` (Phải thu 3.000.000đ, đã thu 1.500.000đ qua PTT001 và PTT002) | Thu thêm tối đa 1.500.000đ. Thu xong số dư = 0đ, trạng thái `DaHoanThanh`. | **Khanh** (Form Thu phí) |
@@ -167,17 +166,3 @@ WHERE MaDK = :MaDK AND TrangThai = 'ThanhCong';
 --     Nếu SoTienNop == SoDuConLai: UPDATE DANG_KY SET TrangThaiDK = 'DaHoanThanh' WHERE MaDK = :MaDK;
 --     COMMIT;
 ```
-
-## 8. Các thủ tục nghiệp vụ MySQL (file 11–15)
-
-Chạy `01_schema.sql`, `02_seed.sql`, rồi lần lượt chạy `11_dang_ky.sql` đến `15_bao_cao_ket_qua.sql` bằng **Execute All** trong MySQL Workbench. Mỗi file tự chọn `english_center_db`. `DELIMITER` là lệnh của MySQL client/Workbench, vì vậy cần chạy toàn bộ file thay vì chỉ bôi đen phần `CREATE PROCEDURE`.
-
-| File | Thủ tục | Kết quả |
-|---|---|---|
-| `11_dang_ky.sql` | `CALL sp_dang_ky_lop('DK009','HV003','LOP_GT_01',DATE_ADD(CURRENT_DATE, INTERVAL 7 DAY));` | Một dòng đăng ký. Đăng ký mới chỉ vào lớp `DangNhanDangKy`; hồ sơ đã hủy có thể xác nhận lại ở lớp `DangHoc` nếu còn chỗ, dùng mã đăng ký cũ. |
-| `12_thu_hoc_phi.sql` | `CALL sp_thu_hoc_phi('PTT006','DK001',NOW(),500000.00,'TienMat',NULL);` | Mã phiếu, tổng đã thu và số dư sau thu. |
-| `13_tim_kiem.sql` | `CALL sp_tim_kiem_dang_ky('IELTS','LOP_IE_01');` | Đăng ký, công nợ và sĩ số. Từ khóa tìm theo học viên, lớp hoặc khóa học; tham số mã lớp lọc chính xác. Dùng `NULL` hoặc chuỗi rỗng để bỏ bộ lọc. |
-| `14_bao_cao_thu.sql` | `CALL sp_bao_cao_thu('2026-09-01','2026-10-31',NULL);` | Hai bảng kết quả: chi tiết phiếu thu thành công và tổng thực thu. |
-| `15_bao_cao_ket_qua.sql` | `CALL sp_bao_cao_ket_qua('LOP_IE_01','BKT01');` | Hai bảng kết quả: một dòng mỗi học viên đủ điều kiện và thống kê. Điểm `0` tính là đã nhập; `NULL` là chưa nhập. |
-
-Hai thủ tục ghi dữ liệu **tự mở và kết thúc giao dịch**; chỉ gọi trực tiếp ngoài giao dịch ứng dụng. Ứng dụng web hiện dùng Spring JDBC với giao dịch Java tương ứng, không gọi thủ tục khi bấm **Lưu** và không tự chạy SQL khi khởi động. Cả hai luồng đều khóa lớp trước khi xác nhận đăng ký và khóa đăng ký trước khi thu phí. Hồ sơ đã hủy có phiếu cũ được tái kích hoạt trên mã cũ: nếu có lịch sử phiếu, giữ nguyên khoản phải thu và ngày đăng ký, đối soát tiền đã thu trước khi đổi trạng thái. `01_schema.sql` tạo lại bảng; `02_seed.sql` đặt lại dữ liệu mẫu. Không chạy hai file này trên database có dữ liệu cần giữ.
