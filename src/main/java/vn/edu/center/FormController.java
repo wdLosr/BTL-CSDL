@@ -103,6 +103,6 @@ public class FormController {
     }
     @GetMapping("/api/dang-ky/{id}") @ResponseBody Map<String,Object> paymentPreview(@PathVariable String id){
         var d=service.enrollmentInfo(id);if(d==null)return Map.of("error","Đăng ký không tồn tại.");
-        var result=new LinkedHashMap<String,Object>();result.put("hocVien",d.get("HoTen"));result.put("lop",d.get("TenLop"));result.put("phaiThu",d.get("KhoanPhaiThu"));result.put("daThu",service.paid(id));result.put("conNo",((BigDecimal)d.get("KhoanPhaiThu")).subtract(service.paid(id)));result.put("hanNop",d.get("HanNop").toString());return result;
+        var result=new LinkedHashMap<String,Object>();result.put("hocVien",d.get("HoTen"));result.put("lop",d.get("TenLop"));result.put("phaiThu",d.get("KhoanPhaiThu"));BigDecimal paid = service.paid(id);result.put("daThu",paid);result.put("conNo",((BigDecimal)d.get("KhoanPhaiThu")).subtract(paid));result.put("hanNop",d.get("HanNop").toString());return result;
     }
 }

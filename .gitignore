@@ -24,3 +24,8 @@ Desktop.ini
 
 # Ket qua build Maven
 /target/
+
+# Cấu hình IDE và nhật ký cục bộ
+/.idea/
+*.iml
+*.log
